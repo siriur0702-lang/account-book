@@ -1,0 +1,146 @@
+{
+  "accounts": [
+    {
+      "id": "a_01",
+      "name": "現金",
+      "type": "cash",
+      "balance": 0
+    },
+    {
+      "id": "a_02",
+      "name": "玉山銀行",
+      "type": "bank",
+      "balance": 0
+    },
+    {
+      "id": "a_1786526188739",
+      "name": "中國信託",
+      "type": "bank",
+      "balance": 0
+    }
+  ],
+  "categories": [
+    {
+      "id": "c_f01",
+      "name": "餐飲",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f02",
+      "name": "交通",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f03",
+      "name": "水電/瓦斯",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f04",
+      "name": "房租/房貸",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f05",
+      "name": "教育",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f06",
+      "name": "醫療",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f07",
+      "name": "娛樂/購物",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f08",
+      "name": "日常用品",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f09",
+      "name": "通訊",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f10",
+      "name": "保險",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f11",
+      "name": "薪資收入",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_f12",
+      "name": "其他收入",
+      "ledger": "家用",
+      "fixed": true
+    },
+    {
+      "id": "c_b01",
+      "name": "進貨",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b02",
+      "name": "薪資",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b03",
+      "name": "租金",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b04",
+      "name": "廣告行銷",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b05",
+      "name": "運費",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b06",
+      "name": "雜費",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b07",
+      "name": "銷售收入",
+      "ledger": "生意",
+      "fixed": true
+    },
+    {
+      "id": "c_b08",
+      "name": "其他收入",
+      "ledger": "生意",
+      "fixed": true
+    }
+  ],
+  "transactions": [],
+  "recurring": []
+}

@@ -795,6 +795,7 @@ function populateAddCategories(){
 
 function populateAccounts(selId){
   const sel=document.getElementById(selId);
+  if(!sel)return;
   sel.innerHTML=db.accounts.map(a=>`<option value="${a.id}">${ACC_ICONS[a.type]||'💼'} ${a.name}</option>`).join('');
 }
 
@@ -806,9 +807,7 @@ function submitEntry(){
   const catId=document.getElementById('inCategory').value;
   const accId=document.getElementById('inAccount').value;
   const note=document.getElementById('inNote').value.trim();
-
   const recorder=document.getElementById('inRecorder').value;
-  const note=document.getElementById('inNote').value.trim();
 
   if(currentType==='transfer'){
     const fromAcc=document.getElementById('inFromAccount').value;

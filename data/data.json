@@ -206,17 +206,6 @@
       "recorder": "熊"
     },
     {
-      "id": "tx_1786549865698_humye",
-      "date": "2026-08-12",
-      "ledger": "家用",
-      "type": "transfer_out",
-      "category": "",
-      "account": "a_01",
-      "amount": 400,
-      "note": "[轉帳] ",
-      "recorder": "熊"
-    },
-    {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",
       "ledger": "家用",

@@ -29,6 +29,12 @@
       "name": "土地銀行(公司戶",
       "type": "bank",
       "balance": 135641
+    },
+    {
+      "id": "a_1786533459145",
+      "name": "富邦卡",
+      "type": "bank",
+      "balance": 0
     }
   ],
   "categories": [
@@ -151,9 +157,25 @@
       "name": "其他收入",
       "ledger": "生意",
       "fixed": true
+    },
+    {
+      "id": "c_1786533432431",
+      "name": "家具",
+      "ledger": "家用",
+      "fixed": false
     }
   ],
   "transactions": [
+    {
+      "id": "tx_1786533466155_rxf06",
+      "date": "2026-08-12",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_1786533432431",
+      "account": "a_1786533459145",
+      "amount": 1611,
+      "note": ""
+    },
     {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",

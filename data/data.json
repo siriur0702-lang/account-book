@@ -155,16 +155,6 @@
   ],
   "transactions": [
     {
-      "id": "tx_1786527188872_n9ewi",
-      "date": "2026-08-12",
-      "ledger": "家用",
-      "type": "expense",
-      "category": "c_f01",
-      "account": "a_1786526188739",
-      "amount": 100,
-      "note": "100"
-    },
-    {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",
       "ledger": "家用",

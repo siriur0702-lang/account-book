@@ -7,16 +7,22 @@
       "balance": 0
     },
     {
-      "id": "a_02",
-      "name": "玉山銀行",
+      "id": "a_1786526188739",
+      "name": "中國信託",
+      "type": "bank",
+      "balance": 70457
+    },
+    {
+      "id": "a_1786526755855",
+      "name": "台新銀行",
       "type": "bank",
       "balance": 0
     },
     {
-      "id": "a_1786526188739",
-      "name": "中國信託",
-      "type": "bank",
-      "balance": 0
+      "id": "a_1786526824787",
+      "name": "投資",
+      "type": "other",
+      "balance": 80000
     }
   ],
   "categories": [

@@ -23,6 +23,12 @@
       "name": "投資",
       "type": "other",
       "balance": 80000
+    },
+    {
+      "id": "a_1786526856559",
+      "name": "土地銀行(公司戶",
+      "type": "bank",
+      "balance": 0
     }
   ],
   "categories": [

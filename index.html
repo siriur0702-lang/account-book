@@ -525,11 +525,15 @@ async function ghRequest(method,body=null){
   return r.json();
 }
 
+function ghDecode(content){
+  return JSON.parse(decodeURIComponent(escape(atob(content.replace(/\n/g,'')))));
+}
+
 async function loadFromGitHub(){
   showToast('載入中…');
   try{
     const res=await ghRequest('GET');
-    const json=JSON.parse(atob(res.content.replace(/\n/g,'')));
+    const json=ghDecode(res.content);
     db=json;
     // 補預設分類
     DEFAULT_CATEGORIES.forEach(dc=>{
@@ -1307,7 +1311,7 @@ async function autoLoadFromGitHub(){
   if(!c.token||!c.repo)return;
   try{
     const res=await ghRequest('GET');
-    const remote=JSON.parse(atob(res.content.replace(/\n/g,'')));
+    const remote=ghDecode(res.content);
     // 用 GitHub 的資料覆蓋本機（GitHub 是唯一真相來源）
     db=remote;
     DEFAULT_CATEGORIES.forEach(dc=>{

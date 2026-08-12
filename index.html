@@ -1088,7 +1088,7 @@ function openCatDetail(catId,type){
 function buildAccReport(txs){
   const grandTotal=db.accounts.reduce((s,acc)=>{
     const init=acc.balance||0;
-    const net=db.transactions.filter(t=>t.account===acc.id).reduce((s2,t)=>s2+(t.type==='income'?t.amount:-t.amount),0);
+    const net=db.transactions.filter(t=>t.account===acc.id).reduce((s2,t)=>s2+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     return s+init+net;
   },0);
   const gtColor=grandTotal>=0?'var(--success)':'var(--danger)';
@@ -1102,10 +1102,10 @@ function buildAccReport(txs){
     </div>`;
   db.accounts.forEach(acc=>{
     const init=acc.balance||0;
-    const net=db.transactions.filter(t=>t.account===acc.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+    const net=db.transactions.filter(t=>t.account===acc.id).reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     const total=init+net;
     const totalColor=total>=0?'var(--success)':'var(--danger)';
-    const monthNet=txs.filter(t=>t.account===acc.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+    const monthNet=txs.filter(t=>t.account===acc.id).reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     html+=`<div class="setting-item" onclick="openAccDetail('${acc.id}')" style="cursor:pointer;active:background:#f9fafb;">
       <div style="flex:1;"><div class="si-label">${ACC_ICONS[acc.type]||'💼'} ${acc.name}</div>
       <div class="si-sub">本月 ${monthNet>=0?'+':''}${fmtMoney(monthNet)}</div></div>
@@ -1157,7 +1157,7 @@ function renderAccDetail(){
   const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
   const init=acc.balance||0;
-  const allNet=db.transactions.filter(t=>t.account===accId).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+  const allNet=db.transactions.filter(t=>t.account===accId).reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
   document.getElementById('accDetailSummary').innerHTML=
     `目前餘額 <b>${fmtMoney(init+allNet)}</b>　` +
     `<span style="color:var(--success)">+${fmtMoney(income)}</span> ` +
@@ -1174,7 +1174,7 @@ function renderAccDetail(){
   let html='';
   Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
     const dayTxs=groups[date];
-    const dayNet=dayTxs.reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+    const dayNet=dayTxs.reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     html+=`<div class="date-group-header">${fmtDateFull(date)} <span style="color:${dayNet>=0?'var(--success)':'var(--danger)'}">${dayNet>=0?'+':''}${fmtMoney(dayNet)}</span></div>`;
     dayTxs.forEach(t=>{
       const cat=db.categories.find(c=>c.id===t.category);
@@ -1261,7 +1261,7 @@ function renderAccountList(){
   el.innerHTML=db.accounts.map(a=>{
     // 計算淨額 = 期初餘額 + 所有收入 - 所有支出
     const init=a.balance||0;
-    const net=db.transactions.filter(t=>t.account===a.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+    const net=db.transactions.filter(t=>t.account===a.id).reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     const total=init+net;
     const totalColor=total>=0?'var(--success)':'var(--danger)';
     return`<div class="setting-item">
@@ -1635,7 +1635,7 @@ function drawTrendChart(){
   const vals=months.map(m=>{
     const endDate=m.ym+'-31';
     const net=db.transactions.filter(t=>t.date<=endDate&&t.type!=='transfer_out'&&t.type!=='transfer_in')
-      .reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+      .reduce((s,t)=>s+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     return initTotal+net;
   });
 

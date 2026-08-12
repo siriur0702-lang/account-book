@@ -28,7 +28,7 @@
       "id": "a_1786526856559",
       "name": "土地銀行(公司戶",
       "type": "bank",
-      "balance": 0
+      "balance": 135641
     }
   ],
   "categories": [
@@ -165,5 +165,17 @@
       "note": "100"
     }
   ],
-  "recurring": []
+  "recurring": [
+    {
+      "id": "rec_1786533161605",
+      "name": "車貸",
+      "amount": 11776,
+      "day": 9,
+      "type": "expense",
+      "ledger": "家用",
+      "category": "c_f04",
+      "account": "a_1786526188739",
+      "endMonth": "2029-07"
+    }
+  ]
 }

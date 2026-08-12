@@ -1235,6 +1235,7 @@ function deleteMember(name){
   renderMemberList();
   populateRecorders();
   showToast('已刪除');
+  autoSync();
 }
 
 function populateRecorders(){
@@ -1341,6 +1342,7 @@ function saveAccount(){
   renderAccountList();
   populateAccounts('inAccount');
   populateAccounts('editAccount');
+  autoSync();
 }
 
 function deleteAccount(id){
@@ -1350,6 +1352,7 @@ function deleteAccount(id){
   renderAccountList();
   populateAccounts('inAccount');
   showToast('已刪除');
+  autoSync();
 }
 
 function openAddCategory(){
@@ -1370,6 +1373,7 @@ function saveCategory(){
   renderCategoryList();
   populateAddCategories();
   showToast('✓ 分類新增成功');
+  autoSync();
 }
 
 function deleteCategory(id){
@@ -1379,6 +1383,7 @@ function deleteCategory(id){
   renderCategoryList();
   populateAddCategories();
   showToast('已刪除');
+  autoSync();
 }
 
 // ═══════════════════════════════════════════════

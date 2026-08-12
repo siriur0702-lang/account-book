@@ -177,6 +177,16 @@
       "note": ""
     },
     {
+      "id": "tx_1786533482788_rfvpy",
+      "date": "2026-08-12",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_1786533459145",
+      "amount": 334,
+      "note": "筆記本"
+    },
+    {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",
       "ledger": "家用",

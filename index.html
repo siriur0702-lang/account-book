@@ -274,6 +274,15 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
     <div id="categoryList"></div>
   </div>
 
+  <!-- 定期交易 -->
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      定期交易
+      <button class="btn btn-primary btn-sm" onclick="openAddRecurring()">+ 新增</button>
+    </div>
+    <div id="recurringList"></div>
+  </div>
+
   <!-- 資料管理 -->
   <div class="card">
     <div class="card-title">資料管理</div>
@@ -373,6 +382,47 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
     </div>
     <button class="btn btn-primary btn-block" onclick="saveCategory()">新增</button>
     <input type="hidden" id="catEditId">
+  </div>
+</div>
+
+<!-- 模態框：定期交易 -->
+<div class="modal-overlay" id="modalRecurring">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalRecurringTitle">新增定期交易</div>
+      <button class="modal-close" onclick="closeModal('modalRecurring')">×</button>
+    </div>
+    <div class="type-toggle" style="margin-bottom:10px;">
+      <button class="expense active" id="recBtnExpense" onclick="recSwitchType('expense')">支出</button>
+      <button class="income" id="recBtnIncome" onclick="recSwitchType('income')">收入</button>
+    </div>
+    <div class="form-group"><label>名稱（備註）</label><input type="text" id="recName" placeholder="例：車貸、房貸、保險..."></div>
+    <div class="form-group"><label>金額</label><input type="number" id="recAmount" inputmode="decimal" placeholder="0"></div>
+    <div class="form-group"><label>每月幾號扣款</label><input type="number" id="recDay" inputmode="numeric" placeholder="1~28" min="1" max="28"></div>
+    <div class="form-group"><label>帳本</label>
+      <select id="recLedger" onchange="populateRecCategories()">
+        <option value="家用">家用帳</option><option value="生意">生意帳</option>
+      </select>
+    </div>
+    <div class="form-group"><label>分類</label><select id="recCategory"></select></div>
+    <div class="form-group"><label>戶頭</label><select id="recAccount"></select></div>
+    <div class="form-group"><label>結束月份（沒有就留空）</label><input type="month" id="recEndMonth" placeholder="例：2027-06"></div>
+    <button class="btn btn-primary btn-block" onclick="saveRecurring()">儲存</button>
+    <input type="hidden" id="recEditId">
+  </div>
+</div>
+
+<!-- 模態框：定期提醒 -->
+<div class="modal-overlay" id="modalRecurringPrompt">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">本月定期交易</div>
+    </div>
+    <div id="recurringPromptContent"></div>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button class="btn btn-primary" style="flex:1;" onclick="confirmRecurring()">全部記入</button>
+      <button class="btn btn-gray" onclick="closeModal('modalRecurringPrompt')">略過</button>
+    </div>
   </div>
 </div>
 
@@ -876,6 +926,7 @@ function renderSettings(){
   document.getElementById('ghPath').value=c.path;
   renderAccountList();
   renderCategoryList();
+  renderRecurringList();
 }
 
 function renderAccountList(){
@@ -1006,6 +1057,151 @@ function deleteCategory(id){
 }
 
 // ═══════════════════════════════════════════════
+//  定期交易
+// ═══════════════════════════════════════════════
+function renderRecurringList(){
+  if(!db.recurring)db.recurring=[];
+  const el=document.getElementById('recurringList');
+  if(!db.recurring.length){
+    el.innerHTML='<div style="color:var(--gray);font-size:.85rem;padding:4px 0;">尚無定期交易</div>';
+    return;
+  }
+  el.innerHTML=db.recurring.map(r=>{
+    const cat=db.categories.find(c=>c.id===r.category);
+    const acc=db.accounts.find(a=>a.id===r.account);
+    const endTxt=r.endMonth?`到 ${r.endMonth}`:'無期限';
+    const sign=r.type==='expense'?'-':'+';
+    const cls=r.type==='expense'?'expense':'income';
+    return`<div class="setting-item">
+      <div style="flex:1;">
+        <div class="si-label">${r.name}</div>
+        <div class="si-sub">每月${r.day}號 · ${cat?cat.name:''} · ${acc?acc.name:''} · ${endTxt}</div>
+      </div>
+      <div style="text-align:right;margin-right:10px;">
+        <div class="tx-amount ${cls}">${sign}${fmtMoney(r.amount)}</div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteRecurring('${r.id}')">刪除</button>
+    </div>`;
+  }).join('');
+}
+
+function openAddRecurring(){
+  document.getElementById('recName').value='';
+  document.getElementById('recAmount').value='';
+  document.getElementById('recDay').value='';
+  document.getElementById('recLedger').value='家用';
+  document.getElementById('recEndMonth').value='';
+  document.getElementById('recEditId').value='';
+  document.getElementById('modalRecurringTitle').textContent='新增定期交易';
+  recSwitchType('expense');
+  populateRecCategories();
+  populateAccounts('recAccount');
+  openModal('modalRecurring');
+}
+
+function recSwitchType(t){
+  document.getElementById('recBtnExpense').classList.toggle('active',t==='expense');
+  document.getElementById('recBtnIncome').classList.toggle('active',t==='income');
+  document.getElementById('recBtnExpense').style.background=t==='expense'?'var(--danger)':'';
+  document.getElementById('recBtnExpense').style.color=t==='expense'?'#fff':'';
+  document.getElementById('recBtnIncome').style.background=t==='income'?'var(--success)':'';
+  document.getElementById('recBtnIncome').style.color=t==='income'?'#fff':'';
+}
+
+function populateRecCategories(){
+  const ledger=document.getElementById('recLedger').value;
+  const sel=document.getElementById('recCategory');
+  const cats=db.categories.filter(c=>c.ledger===ledger);
+  sel.innerHTML=cats.map(c=>`<option value="${c.id}">${getCatIcon(c.name)} ${c.name}</option>`).join('');
+}
+
+function saveRecurring(){
+  const name=document.getElementById('recName').value.trim();
+  const amount=parseFloat(document.getElementById('recAmount').value);
+  const day=parseInt(document.getElementById('recDay').value);
+  if(!name){showToast('請輸入名稱','err');return;}
+  if(!amount||amount<=0){showToast('請輸入金額','err');return;}
+  if(!day||day<1||day>28){showToast('請輸入1~28的日期','err');return;}
+  const type=document.getElementById('recBtnExpense').classList.contains('active')?'expense':'income';
+  const ledger=document.getElementById('recLedger').value;
+  const category=document.getElementById('recCategory').value;
+  const account=document.getElementById('recAccount').value;
+  const endMonth=document.getElementById('recEndMonth').value;
+  if(!db.recurring)db.recurring=[];
+  db.recurring.push({id:'rec_'+Date.now(),name,amount,day,type,ledger,category,account,endMonth});
+  saveLocal();
+  closeModal('modalRecurring');
+  renderRecurringList();
+  showToast('✓ 定期交易新增成功');
+  autoSync();
+}
+
+function deleteRecurring(id){
+  if(!confirm('確定刪除此定期交易？'))return;
+  db.recurring=db.recurring.filter(r=>r.id!==id);
+  saveLocal();
+  renderRecurringList();
+  showToast('已刪除');
+  autoSync();
+}
+
+// 每月開 app 自動檢查定期交易
+let pendingRecurring=[];
+function checkRecurring(){
+  if(!db.recurring||!db.recurring.length)return;
+  const now=new Date();
+  const ym=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  const lastCheck=localStorage.getItem('rec_last_check');
+  if(lastCheck===ym)return; // 本月已提示過
+
+  // 篩選本月應記入但還沒過期的
+  pendingRecurring=db.recurring.filter(r=>{
+    if(r.endMonth&&r.endMonth<ym)return false; // 已到期
+    // 檢查本月是否已記過
+    const dateStr=`${ym}-${String(r.day).padStart(2,'0')}`;
+    const alreadyDone=db.transactions.some(t=>
+      t.date===dateStr && t.amount===r.amount && t.category===r.category && t.note===('[定期] '+r.name)
+    );
+    return !alreadyDone;
+  });
+
+  if(!pendingRecurring.length)return;
+
+  // 顯示提醒
+  const ym_label=`${now.getFullYear()}年${now.getMonth()+1}月`;
+  let html=`<div style="font-size:.9rem;color:var(--gray);margin-bottom:10px;">${ym_label} 有以下定期交易尚未記入：</div>`;
+  pendingRecurring.forEach(r=>{
+    const cat=db.categories.find(c=>c.id===r.category);
+    const sign=r.type==='expense'?'-':'+';
+    const cls=r.type==='expense'?'expense':'income';
+    html+=`<div class="setting-item">
+      <div class="si-label">${r.name}</div>
+      <div class="tx-amount ${cls}" style="font-size:.95rem;">${sign}${fmtMoney(r.amount)}</div>
+    </div>`;
+  });
+  document.getElementById('recurringPromptContent').innerHTML=html;
+  openModal('modalRecurringPrompt');
+}
+
+function confirmRecurring(){
+  const now=new Date();
+  const ym=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  pendingRecurring.forEach(r=>{
+    const dateStr=`${ym}-${String(r.day).padStart(2,'0')}`;
+    db.transactions.push({
+      id:uid(),date:dateStr,ledger:r.ledger,type:r.type,
+      category:r.category,account:r.account,amount:r.amount,note:'[定期] '+r.name
+    });
+  });
+  db.transactions.sort((a,b)=>b.date.localeCompare(a.date));
+  localStorage.setItem('rec_last_check',ym);
+  saveLocal();
+  closeModal('modalRecurringPrompt');
+  showToast(`✓ 已記入 ${pendingRecurring.length} 筆定期交易`);
+  autoSync();
+}
+
+// ═══════════════════════════════════════════════
 //  匯出/匯入
 // ═══════════════════════════════════════════════
 function exportJSON(){
@@ -1102,6 +1298,8 @@ function renderAll(){
   document.querySelectorAll('.modal-overlay').forEach(el=>{
     el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
   });
+  // 檢查定期交易
+  setTimeout(checkRecurring, 800);
 })();
 </script>
 </body>

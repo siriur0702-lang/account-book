@@ -189,6 +189,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786547325962_l77er",
+      "date": "2026-08-12",
+      "ledger": "家用",
+      "type": "income",
+      "category": "c_f08",
+      "account": "a_01",
+      "amount": 400,
+      "note": "從老婆收到筆記本現金",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",
       "ledger": "家用",

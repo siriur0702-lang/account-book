@@ -1298,9 +1298,30 @@ function renderAll(){
   document.querySelectorAll('.modal-overlay').forEach(el=>{
     el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');});
   });
-  // 檢查定期交易
-  setTimeout(checkRecurring, 800);
+  // 開啟時自動從 GitHub 拉最新資料
+  autoLoadFromGitHub();
 })();
+
+async function autoLoadFromGitHub(){
+  const c=getGhConfig();
+  if(!c.token||!c.repo)return;
+  try{
+    const res=await ghRequest('GET');
+    const remote=JSON.parse(atob(res.content.replace(/\n/g,'')));
+    // 用 GitHub 的資料覆蓋本機（GitHub 是唯一真相來源）
+    db=remote;
+    DEFAULT_CATEGORIES.forEach(dc=>{
+      if(!db.categories.find(c=>c.id===dc.id))db.categories.push(dc);
+    });
+    if(!db.recurring)db.recurring=[];
+    saveLocal();
+    renderAll();
+    setTimeout(checkRecurring,400);
+  }catch(e){
+    // 網路問題就用本機資料，不打擾用戶
+    setTimeout(checkRecurring,400);
+  }
+}
 </script>
 </body>
 </html>

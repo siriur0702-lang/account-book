@@ -418,6 +418,20 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
   </div>
 </div>
 
+<!-- 模態框：分類細項 -->
+<div class="modal-overlay" id="modalCatDetail">
+  <div class="modal" style="max-height:85vh;display:flex;flex-direction:column;">
+    <div class="modal-header" style="flex-shrink:0;">
+      <div>
+        <div class="modal-title" id="catDetailTitle"></div>
+        <div id="catDetailSummary" style="font-size:.8rem;color:var(--gray);margin-top:2px;"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalCatDetail')">×</button>
+    </div>
+    <div id="catDetailContent" style="overflow-y:auto;flex:1;"></div>
+  </div>
+</div>
+
 <!-- 模態框：新增成員 -->
 <div class="modal-overlay" id="modalMember">
   <div class="modal">
@@ -925,11 +939,9 @@ function renderReport(){
 
 function buildCatReport(title,type,txs,total){
   const bycat={};
-  txs.forEach(t=>{
-    bycat[t.category]=(bycat[t.category]||0)+t.amount;
-  });
+  txs.forEach(t=>{bycat[t.category]=(bycat[t.category]||0)+t.amount;});
   const sorted=Object.entries(bycat).sort((a,b)=>b[1]-a[1]);
-  let html=`<div class="card"><div class="card-title">${title}</div>`;
+  let html=`<div class="card"><div class="card-title">${title} <span style="font-size:.75rem;color:var(--gray);">（點入查看細項）</span></div>`;
   sorted.forEach(([catId,amt])=>{
     const cat=db.categories.find(c=>c.id===catId);
     const name=cat?cat.name:'未知';
@@ -938,21 +950,80 @@ function buildCatReport(title,type,txs,total){
     const sign=type==='expense'?'-':'+';
     const cls=type==='expense'?'fill-expense':'fill-income';
     const amtCls=type==='expense'?'expense':'income';
-    html+=`<div class="cat-report-item">
+    html+=`<div class="cat-report-item" onclick="openCatDetail('${catId}','${type}')" style="cursor:pointer;">
       <div class="cat-report-name">${icon} ${name}</div>
       <div class="cat-report-bar-wrap">
         <div class="cat-report-bar"><div class="cat-report-bar-fill ${cls}" style="width:${pct}%"></div></div>
         <div style="font-size:.7rem;color:var(--gray);margin-top:1px;">${pct}%</div>
       </div>
-      <div class="cat-report-amt ${amtCls}">${sign}${fmtMoney(amt)}</div>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <div class="cat-report-amt ${amtCls}">${sign}${fmtMoney(amt)}</div>
+        <span style="color:var(--gray);font-size:1rem;">›</span>
+      </div>
     </div>`;
   });
   html+='</div>';
   return html;
 }
 
+// ── 分類細項 ──
+let _catDetailTxs=[];
+function openCatDetail(catId,type){
+  const month=document.getElementById('reportMonth').value;
+  const ledger=currentReportLedger;
+  _catDetailTxs=db.transactions.filter(t=>
+    t.category===catId && t.type===type && t.ledger===ledger &&
+    (!month||t.date.startsWith(month))
+  ).sort((a,b)=>b.date.localeCompare(a.date));
+
+  const cat=db.categories.find(c=>c.id===catId);
+  const name=cat?cat.name:'未知分類';
+  const icon=getCatIcon(name);
+  const total=_catDetailTxs.reduce((s,t)=>s+t.amount,0);
+  const sign=type==='expense'?'-':'+';
+  const cls=type==='expense'?'expense':'income';
+  const monthLabel=month?month.replace('-','年')+'月':'全部';
+
+  document.getElementById('catDetailTitle').textContent=`${icon} ${name}`;
+  document.getElementById('catDetailSummary').innerHTML=
+    `${monthLabel}　共 ${_catDetailTxs.length} 筆　<span class="${cls}">${sign}${fmtMoney(total)}</span>`;
+
+  if(!_catDetailTxs.length){
+    document.getElementById('catDetailContent').innerHTML='<div class="empty">沒有記錄</div>';
+  } else {
+    let html='<div class="tx-list" style="padding:4px 0;">';
+    _catDetailTxs.forEach(t=>{
+      const acc=db.accounts.find(a=>a.id===t.account);
+      const accName=acc?acc.name:'';
+      html+=`<div class="tx-item">
+        <div class="tx-info">
+          <div class="tx-cat">${fmtDateFull(t.date)}</div>
+          <div class="tx-sub">${accName}${t.recorder?' · 👤'+t.recorder:''}${t.note?' · '+t.note:''}</div>
+        </div>
+        <div class="tx-amount ${cls}">${sign}${fmtMoney(t.amount)}</div>
+      </div>`;
+    });
+    html+='</div>';
+    document.getElementById('catDetailContent').innerHTML=html;
+  }
+  openModal('modalCatDetail');
+}
+
 function buildAccReport(txs){
-  let html=`<div class="card"><div class="card-title">戶頭餘額 <span style="font-size:.75rem;color:var(--gray);">（點入查看明細）</span></div>`;
+  const grandTotal=db.accounts.reduce((s,acc)=>{
+    const init=acc.balance||0;
+    const net=db.transactions.filter(t=>t.account===acc.id).reduce((s2,t)=>s2+(t.type==='income'?t.amount:-t.amount),0);
+    return s+init+net;
+  },0);
+  const gtColor=grandTotal>=0?'var(--success)':'var(--danger)';
+  let html=`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="card-title" style="margin-bottom:0;">戶頭餘額 <span style="font-size:.75rem;color:var(--gray);">（點入查看明細）</span></div>
+      <div style="text-align:right;">
+        <div style="font-size:.72rem;color:var(--gray);">所有帳戶合計</div>
+        <div style="font-size:1.15rem;font-weight:800;color:${gtColor};">${fmtMoney(grandTotal)}</div>
+      </div>
+    </div>`;
   db.accounts.forEach(acc=>{
     const init=acc.balance||0;
     const net=db.transactions.filter(t=>t.account===acc.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);

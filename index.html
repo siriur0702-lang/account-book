@@ -506,8 +506,24 @@ async function pushToGitHub(){
 
 async function syncNow(){
   const c=getGhConfig();
-  if(!c.token||!c.repo){showToast('請先設定 GitHub Token');return;}
+  if(!c.token||!c.repo){showToast('請先在設定填入 GitHub Token');return;}
   await pushToGitHub();
+}
+
+async function autoSync(){
+  const c=getGhConfig();
+  if(!c.token||!c.repo)return; // 沒設定就跳過，不打擾用戶
+  try{
+    let sha='';
+    try{const r=await ghRequest('GET');sha=r.sha;}catch(e){}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(db,null,2))));
+    const body={message:'auto sync '+new Date().toISOString(),content,branch:'main'};
+    if(sha)body.sha=sha;
+    await ghRequest('PUT',body);
+    showToast('✓ 已同步');
+  }catch(e){
+    showToast('同步失敗，資料已存本機','err');
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -609,7 +625,8 @@ function submitEntry(){
   // reset
   document.getElementById('inAmount').value='';
   document.getElementById('inNote').value='';
-  showToast('✓ 已記錄');
+  showToast('✓ 已記錄，同步中…');
+  autoSync();
 }
 
 // ═══════════════════════════════════════════════
@@ -736,7 +753,8 @@ function saveEdit(){
   saveLocal();
   closeModal('modalEdit');
   renderList();
-  showToast('✓ 已更新');
+  showToast('✓ 已更新，同步中…');
+  autoSync();
 }
 
 function deleteEntry(){
@@ -746,7 +764,8 @@ function deleteEntry(){
   saveLocal();
   closeModal('modalEdit');
   renderList();
-  showToast('已刪除');
+  showToast('已刪除，同步中…');
+  autoSync();
 }
 
 // ═══════════════════════════════════════════════

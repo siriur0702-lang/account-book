@@ -163,6 +163,16 @@
       "account": "a_1786526188739",
       "amount": 100,
       "note": "100"
+    },
+    {
+      "id": "tx_1786533168057_9dpbw",
+      "date": "2026-08-09",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f04",
+      "account": "a_1786526188739",
+      "amount": 11776,
+      "note": "[定期] 車貸"
     }
   ],
   "recurring": [

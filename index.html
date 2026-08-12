@@ -187,6 +187,12 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
       <select id="inAccount"></select>
     </div>
 
+    <!-- 記帳者 -->
+    <div class="form-group">
+      <label>記帳者</label>
+      <select id="inRecorder"></select>
+    </div>
+
     <!-- 備註 -->
     <div class="form-group">
       <label>備註</label>
@@ -250,6 +256,15 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
       <button class="btn btn-primary btn-sm" onclick="loadFromGitHub()">從 GitHub 載入</button>
       <button class="btn btn-gray btn-sm" onclick="pushToGitHub()">推送到 GitHub</button>
     </div>
+  </div>
+
+  <!-- 成員管理 -->
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      成員管理
+      <button class="btn btn-primary btn-sm" onclick="openAddMember()">+ 新增</button>
+    </div>
+    <div id="memberList"></div>
   </div>
 
   <!-- 戶頭管理 -->
@@ -335,6 +350,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
     </div>
     <div class="form-group"><label>分類</label><select id="editCategory"></select></div>
     <div class="form-group"><label>戶頭</label><select id="editAccount"></select></div>
+    <div class="form-group"><label>記帳者</label><select id="editRecorder"></select></div>
     <div class="form-group"><label>備註</label><textarea id="editNote"></textarea></div>
     <div style="display:flex;gap:8px;">
       <button class="btn btn-primary" style="flex:1;" onclick="saveEdit()">儲存</button>
@@ -382,6 +398,18 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
     </div>
     <button class="btn btn-primary btn-block" onclick="saveCategory()">新增</button>
     <input type="hidden" id="catEditId">
+  </div>
+</div>
+
+<!-- 模態框：新增成員 -->
+<div class="modal-overlay" id="modalMember">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">新增成員</div>
+      <button class="modal-close" onclick="closeModal('modalMember')">×</button>
+    </div>
+    <div class="form-group"><label>名稱</label><input type="text" id="memberName" placeholder="例：老公、老婆、小明..."></div>
+    <button class="btn btn-primary btn-block" onclick="saveMember()">新增</button>
   </div>
 </div>
 
@@ -458,6 +486,8 @@ const DEFAULT_CATEGORIES = [
   {id:'c_b08',name:'其他收入',ledger:'生意',fixed:true},
 ];
 
+const DEFAULT_MEMBERS = ['老公','老婆'];
+
 const DEFAULT_ACCOUNTS = [
   {id:'a_01',name:'現金',type:'cash',balance:0},
   {id:'a_02',name:'玉山銀行',type:'bank',balance:0},
@@ -477,11 +507,13 @@ function saveLocal(){localStorage.setItem('accountBook_db',JSON.stringify(db));}
 function loadLocal(){
   const raw=localStorage.getItem('accountBook_db');
   if(raw){db=JSON.parse(raw);}
-  else{db={accounts:[...DEFAULT_ACCOUNTS],categories:[...DEFAULT_CATEGORIES],transactions:[]};}
+  else{db={accounts:[...DEFAULT_ACCOUNTS],categories:[...DEFAULT_CATEGORIES],transactions:[],members:[...DEFAULT_MEMBERS],recurring:[]};}
   // 補缺失預設（舊版升級）
   DEFAULT_CATEGORIES.forEach(dc=>{
     if(!db.categories.find(c=>c.id===dc.id))db.categories.push(dc);
   });
+  if(!db.members)db.members=[...DEFAULT_MEMBERS];
+  if(!db.recurring)db.recurring=[];
 }
 
 // ═══════════════════════════════════════════════
@@ -671,7 +703,8 @@ function submitEntry(){
   const accId=document.getElementById('inAccount').value;
   const note=document.getElementById('inNote').value.trim();
 
-  const tx={id:uid(),date,ledger:currentLedger,type:currentType,category:catId,account:accId,amount:amt,note};
+  const recorder=document.getElementById('inRecorder').value;
+  const tx={id:uid(),date,ledger:currentLedger,type:currentType,category:catId,account:accId,amount:amt,note,recorder};
   db.transactions.push(tx);
   db.transactions.sort((a,b)=>b.date.localeCompare(a.date));
   saveLocal();
@@ -738,7 +771,7 @@ function renderList(){
         <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
         <div class="tx-info">
           <div class="tx-cat">${catName}${ledgerTag}</div>
-          <div class="tx-sub">${accName}${t.note?' · '+t.note:''}</div>
+          <div class="tx-sub">${accName}${t.recorder?' · 👤'+t.recorder:''}${t.note?' · '+t.note:''}</div>
         </div>
         <div class="tx-amount ${cls}">${sign}${fmtMoney(t.amount)}</div>
       </div>`;
@@ -759,10 +792,14 @@ function openEdit(id){
   document.getElementById('editNote').value=t.note||'';
   editSwitchType(t.type);
   populateEditCategories();
+  populateRecorders();
   setTimeout(()=>{
     document.getElementById('editCategory').value=t.category;
     populateEditAccounts();
-    setTimeout(()=>document.getElementById('editAccount').value=t.account,10);
+    setTimeout(()=>{
+      document.getElementById('editAccount').value=t.account;
+      if(t.recorder)document.getElementById('editRecorder').value=t.recorder;
+    },10);
   },10);
   openModal('modalEdit');
 }
@@ -802,6 +839,7 @@ function saveEdit(){
     category:document.getElementById('editCategory').value,
     account:document.getElementById('editAccount').value,
     note:document.getElementById('editNote').value.trim(),
+    recorder:document.getElementById('editRecorder').value,
   };
   db.transactions.sort((a,b)=>b.date.localeCompare(a.date));
   saveLocal();
@@ -922,12 +960,60 @@ function buildAccReport(txs){
 // ═══════════════════════════════════════════════
 //  設定頁
 // ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  成員管理
+// ═══════════════════════════════════════════════
+function renderMemberList(){
+  const el=document.getElementById('memberList');
+  el.innerHTML=db.members.map(m=>`
+    <div class="setting-item">
+      <div class="si-label">👤 ${m}</div>
+      <button class="btn btn-danger btn-sm" onclick="deleteMember('${m}')">刪除</button>
+    </div>`).join('');
+}
+
+function openAddMember(){
+  document.getElementById('memberName').value='';
+  openModal('modalMember');
+}
+
+function saveMember(){
+  const name=document.getElementById('memberName').value.trim();
+  if(!name){showToast('請輸入名稱','err');return;}
+  if(db.members.includes(name)){showToast('已存在','err');return;}
+  db.members.push(name);
+  saveLocal();
+  closeModal('modalMember');
+  renderMemberList();
+  populateRecorders();
+  showToast('✓ 新增成功');
+  autoSync();
+}
+
+function deleteMember(name){
+  if(!confirm('確定刪除？'))return;
+  db.members=db.members.filter(m=>m!==name);
+  saveLocal();
+  renderMemberList();
+  populateRecorders();
+  showToast('已刪除');
+}
+
+function populateRecorders(){
+  ['inRecorder','editRecorder'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    sel.innerHTML=db.members.map(m=>`<option value="${m}">${m}</option>`).join('');
+  });
+}
+
 function renderSettings(){
   updateGhStatus();
   const c=getGhConfig();
   document.getElementById('ghToken').value=c.token;
   document.getElementById('ghRepo').value=c.repo;
   document.getElementById('ghPath').value=c.path;
+  renderMemberList();
   renderAccountList();
   renderCategoryList();
   renderRecurringList();
@@ -1280,6 +1366,7 @@ function renderAll(){
   populateAccounts('inAccount');
   populateAccounts('editAccount');
   populateFilterCats();
+  populateRecorders();
 }
 
 // ═══════════════════════════════════════════════

@@ -401,6 +401,23 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
   </div>
 </div>
 
+<!-- 模態框：戶頭明細 -->
+<div class="modal-overlay" id="modalAccDetail">
+  <div class="modal" style="max-height:85vh;display:flex;flex-direction:column;">
+    <div class="modal-header" style="flex-shrink:0;">
+      <div>
+        <div class="modal-title" id="accDetailTitle"></div>
+        <div id="accDetailSummary" style="font-size:.8rem;color:var(--gray);margin-top:2px;"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalAccDetail')">×</button>
+    </div>
+    <div style="flex-shrink:0;margin-bottom:8px;">
+      <select id="accDetailMonth" onchange="renderAccDetail()" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;background:#fff;outline:none;"></select>
+    </div>
+    <div id="accDetailContent" style="overflow-y:auto;flex:1;"></div>
+  </div>
+</div>
+
 <!-- 模態框：新增成員 -->
 <div class="modal-overlay" id="modalMember">
   <div class="modal">
@@ -935,26 +952,100 @@ function buildCatReport(title,type,txs,total){
 }
 
 function buildAccReport(txs){
-  // 顯示所有戶頭餘額（期初 + 所有歷史交易，不限月份）
-  let html=`<div class="card"><div class="card-title">戶頭餘額</div>`;
+  let html=`<div class="card"><div class="card-title">戶頭餘額 <span style="font-size:.75rem;color:var(--gray);">（點入查看明細）</span></div>`;
   db.accounts.forEach(acc=>{
     const init=acc.balance||0;
     const net=db.transactions.filter(t=>t.account===acc.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
     const total=init+net;
     const totalColor=total>=0?'var(--success)':'var(--danger)';
-    // 本月流量
     const monthNet=txs.filter(t=>t.account===acc.id).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
-    html+=`<div class="setting-item">
+    html+=`<div class="setting-item" onclick="openAccDetail('${acc.id}')" style="cursor:pointer;active:background:#f9fafb;">
       <div style="flex:1;"><div class="si-label">${ACC_ICONS[acc.type]||'💼'} ${acc.name}</div>
       <div class="si-sub">本月 ${monthNet>=0?'+':''}${fmtMoney(monthNet)}</div></div>
-      <div style="text-align:right;">
+      <div style="text-align:right;margin-right:6px;">
         <div style="font-size:.75rem;color:var(--gray);">目前餘額</div>
         <div style="font-size:1.05rem;font-weight:700;color:${totalColor};">${fmtMoney(total)}</div>
       </div>
+      <span style="color:var(--gray);font-size:1.1rem;">›</span>
     </div>`;
   });
   html+='</div>';
   return html;
+}
+
+// ── 戶頭明細 ──
+let currentAccDetailId='';
+function openAccDetail(accId){
+  currentAccDetailId=accId;
+  const acc=db.accounts.find(a=>a.id===accId);
+  document.getElementById('accDetailTitle').textContent=`${ACC_ICONS[acc.type]||'💼'} ${acc.name}`;
+
+  // 月份下拉
+  const sel=document.getElementById('accDetailMonth');
+  const now=new Date();
+  let opts='<option value="">全部</option>';
+  for(let i=0;i<24;i++){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const val=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    opts+=`<option value="${val}">${d.getFullYear()}年${d.getMonth()+1}月</option>`;
+  }
+  sel.innerHTML=opts;
+  sel.value=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+
+  renderAccDetail();
+  openModal('modalAccDetail');
+}
+
+function renderAccDetail(){
+  const accId=currentAccDetailId;
+  const acc=db.accounts.find(a=>a.id===accId);
+  const month=document.getElementById('accDetailMonth').value;
+
+  let txs=db.transactions.filter(t=>{
+    if(t.account!==accId)return false;
+    if(month&&!t.date.startsWith(month))return false;
+    return true;
+  });
+
+  const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const init=acc.balance||0;
+  const allNet=db.transactions.filter(t=>t.account===accId).reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+  document.getElementById('accDetailSummary').innerHTML=
+    `目前餘額 <b>${fmtMoney(init+allNet)}</b>　` +
+    `<span style="color:var(--success)">+${fmtMoney(income)}</span> ` +
+    `<span style="color:var(--danger)">-${fmtMoney(expense)}</span>`;
+
+  if(!txs.length){
+    document.getElementById('accDetailContent').innerHTML='<div class="empty">沒有記錄</div>';
+    return;
+  }
+
+  // 依日期分組
+  const groups={};
+  txs.forEach(t=>{if(!groups[t.date])groups[t.date]=[];groups[t.date].push(t);});
+  let html='';
+  Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(date=>{
+    const dayTxs=groups[date];
+    const dayNet=dayTxs.reduce((s,t)=>s+(t.type==='income'?t.amount:-t.amount),0);
+    html+=`<div class="date-group-header">${fmtDateFull(date)} <span style="color:${dayNet>=0?'var(--success)':'var(--danger)'}">${dayNet>=0?'+':''}${fmtMoney(dayNet)}</span></div>`;
+    dayTxs.forEach(t=>{
+      const cat=db.categories.find(c=>c.id===t.category);
+      const icon=cat?getCatIcon(cat.name):'📋';
+      const catName=cat?cat.name:'未知';
+      const sign=t.type==='expense'?'-':'+';
+      const cls=t.type==='expense'?'expense':'income';
+      html+=`<div class="tx-item" style="margin-bottom:6px;">
+        <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
+        <div class="tx-info">
+          <div class="tx-cat">${catName}</div>
+          <div class="tx-sub">${t.recorder?'👤'+t.recorder+' · ':''}${t.note||''}</div>
+        </div>
+        <div class="tx-amount ${cls}">${sign}${fmtMoney(t.amount)}</div>
+      </div>`;
+    });
+  });
+  document.getElementById('accDetailContent').innerHTML=html;
 }
 
 // ═══════════════════════════════════════════════

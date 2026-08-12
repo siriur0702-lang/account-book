@@ -1490,12 +1490,16 @@ async function autoLoadFromGitHub(){
   try{
     const res=await ghRequest('GET');
     const remote=ghDecode(res.content);
-    // 用 GitHub 的資料覆蓋本機（GitHub 是唯一真相來源）
     db=remote;
+    // 補齊所有可能缺少的欄位
+    if(!db.accounts)db.accounts=[...DEFAULT_ACCOUNTS];
+    if(!db.categories)db.categories=[];
+    if(!db.transactions)db.transactions=[];
+    if(!db.members)db.members=[...DEFAULT_MEMBERS];
+    if(!db.recurring)db.recurring=[];
     DEFAULT_CATEGORIES.forEach(dc=>{
       if(!db.categories.find(c=>c.id===dc.id))db.categories.push(dc);
     });
-    if(!db.recurring)db.recurring=[];
     saveLocal();
     renderAll();
     setTimeout(checkRecurring,400);

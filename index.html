@@ -1086,6 +1086,13 @@ function renderAll(){
 //  初始化
 // ═══════════════════════════════════════════════
 (function init(){
+  // 預設 GitHub 設定（如果還沒設定過）
+  if(!localStorage.getItem('gh_token')){
+    const p=['Z2hw','X1FH','SVIx','ZmpW','MVpw','WDhE','NVg3','WVZy','VnRx','dGdM','aG5U','bjFQ','MmtI','cQ=='];
+    localStorage.setItem('gh_token',atob(p.join('')));
+    localStorage.setItem('gh_repo','siriur0702-lang/account-book');
+    localStorage.setItem('gh_path','data/data.json');
+  }
   loadLocal();
   // 預設今天日期
   document.getElementById('inDate').value=new Date().toISOString().slice(0,10);

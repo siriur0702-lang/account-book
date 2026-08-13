@@ -173,6 +173,17 @@
   ],
   "transactions": [
     {
+      "id": "tx_1786633201237_2hvxl",
+      "date": "2026-08-13",
+      "ledger": "家用",
+      "type": "income",
+      "category": "c_f12",
+      "account": "a_1786526188739",
+      "amount": 7000,
+      "note": "劉峰 修音響",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786533466155_rxf06",
       "date": "2026-08-12",
       "ledger": "家用",

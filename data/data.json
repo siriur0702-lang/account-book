@@ -228,6 +228,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786592028175_wv82s",
+      "date": "2026-08-12",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f02",
+      "account": "a_1786533459145",
+      "amount": 1050,
+      "note": "熊機車 600\n鵝機車450",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786533168057_9dpbw",
       "date": "2026-08-09",
       "ledger": "家用",

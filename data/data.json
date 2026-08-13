@@ -195,17 +195,6 @@
       "recorder": "熊"
     },
     {
-      "id": "tx_1786549098870_3w860",
-      "date": "2026-08-12",
-      "ledger": "家用",
-      "type": "income",
-      "category": "c_f08",
-      "account": "a_01",
-      "amount": 400,
-      "note": "資料夾",
-      "recorder": "熊"
-    },
-    {
       "id": "tx_1786550908800_50riw",
       "date": "2026-08-12",
       "ledger": "家用",

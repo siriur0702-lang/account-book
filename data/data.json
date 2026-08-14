@@ -179,6 +179,17 @@
   ],
   "transactions": [
     {
+      "id": "tx_1786705978809_ydevl",
+      "date": "2026-08-14",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b06",
+      "account": "a_1786667097841",
+      "amount": 248,
+      "note": "音源線 劉峰",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786633201237_2hvxl",
       "date": "2026-08-13",
       "ledger": "家用",

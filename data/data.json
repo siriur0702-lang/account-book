@@ -41,6 +41,12 @@
       "name": "工作事業",
       "type": "cash",
       "balance": 0
+    },
+    {
+      "id": "a_1786667097841",
+      "name": "中信卡",
+      "type": "bank",
+      "balance": 0
     }
   ],
   "categories": [

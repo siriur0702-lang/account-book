@@ -223,6 +223,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786673660245_w5t1e",
+      "date": "2026-08-14",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_1786667097841",
+      "amount": 64,
+      "note": "食物",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786633201237_2hvxl",
       "date": "2026-08-13",
       "ledger": "家用",
@@ -231,17 +242,6 @@
       "account": "a_1786526188739",
       "amount": 7000,
       "note": "劉峰 修音響",
-      "recorder": "熊"
-    },
-    {
-      "id": "tx_1786673660245_w5t1e",
-      "date": "2026-08-13",
-      "ledger": "家用",
-      "type": "expense",
-      "category": "c_f01",
-      "account": "a_1786667097841",
-      "amount": 64,
-      "note": "食物",
       "recorder": "熊"
     },
     {

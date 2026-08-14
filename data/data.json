@@ -212,6 +212,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786673660245_w5t1e",
+      "date": "2026-08-13",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_1786667097841",
+      "amount": 64,
+      "note": "食物",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786533466155_rxf06",
       "date": "2026-08-12",
       "ledger": "家用",

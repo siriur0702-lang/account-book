@@ -192,9 +192,9 @@
     {
       "id": "tx_1786667108347_jo1dx",
       "date": "2026-08-13",
-      "ledger": "家用",
+      "ledger": "生意",
       "type": "expense",
-      "category": "c_f02",
+      "category": "c_b05",
       "account": "a_1786667097841",
       "amount": 1080,
       "note": "油錢",

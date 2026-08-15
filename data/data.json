@@ -293,13 +293,14 @@
     {
       "id": "tx_1786633201237_2hvxl",
       "date": "2026-08-13",
-      "ledger": "家用",
+      "ledger": "生意",
       "type": "income",
-      "category": "c_f12",
+      "category": "c_b08",
       "account": "a_1786526188739",
       "amount": 7000,
       "note": "劉峰 修音響",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": "prj_1786799361549"
     },
     {
       "id": "tx_1786709668274_hhw15",

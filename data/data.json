@@ -343,13 +343,14 @@
     {
       "id": "tx_1786673660245_w5t1e",
       "date": "2026-08-14",
-      "ledger": "家用",
+      "ledger": "個人",
       "type": "expense",
-      "category": "c_f01",
+      "category": "c_p01",
       "account": "a_1786667097841",
       "amount": 64,
       "note": "食物",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": ""
     },
     {
       "id": "tx_1786633201237_2hvxl",

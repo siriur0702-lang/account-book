@@ -1119,35 +1119,27 @@ function buildDaySection(ledger,date,txs){
   // 支出
   const expTxs=txs.filter(t=>t.type==='expense');
   const incTxs=txs.filter(t=>t.type==='income');
+  const renderTxRow=(t,sign,color)=>{
+    const cat=db.categories.find(c=>c.id===t.category);
+    const acc=db.accounts.find(a=>a.id===t.account);
+    const proj=t.project&&db.projects?db.projects.find(p=>p.id===t.project):null;
+    const projTag=proj?`<span style="background:#f3e8ff;color:#7e22ce;border-radius:6px;padding:1px 6px;font-size:.68rem;margin-left:4px;">🏗 ${proj.name}</span>`:'';
+    return`<div style="display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;">
+      <div style="width:28px;text-align:center;font-size:1rem;">${cat?getCatIcon(cat.name):'📋'}</div>
+      <div style="flex:1;margin-left:8px;">
+        <div style="font-size:.88rem;font-weight:600;">${cat?cat.name:'未知分類'}${projTag}</div>
+        <div style="font-size:.73rem;color:var(--gray);">${acc?acc.name:''}${t.note?' · '+t.note:''}${t.recorder?' · 👤'+t.recorder:''}</div>
+      </div>
+      <div style="font-size:.92rem;font-weight:700;color:${color};">${sign}${fmtMoney(t.amount)}</div>
+    </div>`;
+  };
   if(expTxs.length){
     html+=`<div style="font-size:.78rem;color:var(--gray);margin-bottom:4px;font-weight:600;">支出</div>`;
-    expTxs.forEach(t=>{
-      const cat=db.categories.find(c=>c.id===t.category);
-      const acc=db.accounts.find(a=>a.id===t.account);
-      html+=`<div style="display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;">
-        <div style="width:28px;text-align:center;font-size:1rem;">${cat?getCatIcon(cat.name):'📋'}</div>
-        <div style="flex:1;margin-left:8px;">
-          <div style="font-size:.88rem;font-weight:600;">${cat?cat.name:'未知分類'}</div>
-          <div style="font-size:.73rem;color:var(--gray);">${acc?acc.name:''}${t.note?' · '+t.note:''}${t.recorder?' · 👤'+t.recorder:''}</div>
-        </div>
-        <div style="font-size:.92rem;font-weight:700;color:var(--danger);">-${fmtMoney(t.amount)}</div>
-      </div>`;
-    });
+    expTxs.forEach(t=>{html+=renderTxRow(t,'-','var(--danger)');});
   }
   if(incTxs.length){
     html+=`<div style="font-size:.78rem;color:var(--gray);margin:8px 0 4px;font-weight:600;">收入</div>`;
-    incTxs.forEach(t=>{
-      const cat=db.categories.find(c=>c.id===t.category);
-      const acc=db.accounts.find(a=>a.id===t.account);
-      html+=`<div style="display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;">
-        <div style="width:28px;text-align:center;font-size:1rem;">${cat?getCatIcon(cat.name):'📋'}</div>
-        <div style="flex:1;margin-left:8px;">
-          <div style="font-size:.88rem;font-weight:600;">${cat?cat.name:'未知分類'}</div>
-          <div style="font-size:.73rem;color:var(--gray);">${acc?acc.name:''}${t.note?' · '+t.note:''}${t.recorder?' · 👤'+t.recorder:''}</div>
-        </div>
-        <div style="font-size:.92rem;font-weight:700;color:var(--success);">+${fmtMoney(t.amount)}</div>
-      </div>`;
-    });
+    incTxs.forEach(t=>{html+=renderTxRow(t,'+','var(--success)');});
   }
   html+=`</div>`;
   return html;

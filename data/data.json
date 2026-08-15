@@ -212,6 +212,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786786840109_kwtfv",
+      "date": "2026-08-15",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b05",
+      "account": "a_01",
+      "amount": 1023,
+      "note": "油錢",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",

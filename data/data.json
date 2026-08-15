@@ -236,6 +236,18 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786799835028_6gl76",
+      "date": "2026-08-15",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 2078,
+      "note": "落地櫃洗臉盆",
+      "recorder": "熊",
+      "project": "prj_1786799809104"
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",

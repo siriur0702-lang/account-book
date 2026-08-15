@@ -213,6 +213,12 @@ canvas#trendChart{width:100%;display:block;}
       <div class="form-group"><label>轉到哪個戶頭</label><select id="inToAccount"></select></div>
     </div>
 
+    <!-- 案場（生意帳才顯示） -->
+    <div class="form-group" id="projectField" style="display:none;">
+      <label>案場</label>
+      <select id="inProject"></select>
+    </div>
+
     <!-- 記帳者 -->
     <div class="form-group"><label>記帳者</label><select id="inRecorder"></select></div>
 
@@ -238,6 +244,9 @@ canvas#trendChart{width:100%;display:block;}
     </select>
     <select id="filterCat" onchange="renderList()">
       <option value="">所有分類</option>
+    </select>
+    <select id="filterProject" onchange="renderList()">
+      <option value="">所有案場</option>
     </select>
   </div>
   <div id="txListContainer"></div>
@@ -315,6 +324,15 @@ canvas#trendChart{width:100%;display:block;}
       <button onclick="switchCatTab('生意',this)">生意</button>
     </div>
     <div id="categoryList"></div>
+  </div>
+
+  <!-- 案場管理 -->
+  <div class="card">
+    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+      案場管理
+      <button class="btn btn-primary btn-sm" onclick="openAddProject()">+ 新增</button>
+    </div>
+    <div id="projectList"></div>
   </div>
 
   <!-- 常用快捷 -->
@@ -459,6 +477,18 @@ canvas#trendChart{width:100%;display:block;}
       <select id="accDetailMonth" onchange="renderAccDetail()" style="width:100%;padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;background:#fff;outline:none;"></select>
     </div>
     <div id="accDetailContent" style="overflow-y:auto;flex:1;"></div>
+  </div>
+</div>
+
+<!-- 模態框：案場 -->
+<div class="modal-overlay" id="modalProject">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">新增案場</div>
+      <button class="modal-close" onclick="closeModal('modalProject')">×</button>
+    </div>
+    <div class="form-group"><label>案場名稱</label><input type="text" id="projectName" placeholder="例：台中廠、林口社區..."></div>
+    <button class="btn btn-primary btn-block" onclick="saveProject()">新增</button>
   </div>
 </div>
 
@@ -616,6 +646,7 @@ function loadLocal(){
   if(!db.recurring)db.recurring=[];
   if(!db.shortcuts)db.shortcuts=[];
   if(!db.budgets)db.budgets={};
+  if(!db.projects)db.projects=[];
 }
 
 // ═══════════════════════════════════════════════
@@ -775,6 +806,9 @@ function switchLedger(l,btn){
   document.querySelectorAll('#page-add .seg-control button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   populateAddCategories();
+  const pf=document.getElementById('projectField');
+  if(pf)pf.style.display=l==='生意'?'block':'none';
+  if(l==='生意')populateProjectSelect();
 }
 
 function switchType(t){
@@ -820,7 +854,8 @@ function submitEntry(){
     db.transactions.push({id:uid(),date,ledger:currentLedger,type:'transfer_out',category:'',account:fromAcc,amount:amt,note:'[轉帳] '+(note||''),recorder});
     db.transactions.push({id:uid(),date,ledger:currentLedger,type:'transfer_in',category:'',account:toAcc,amount:amt,note:'[轉帳] '+(note||''),recorder});
   } else {
-    db.transactions.push({id:uid(),date,ledger:currentLedger,type:currentType,category:catId,account:accId,amount:amt,note,recorder});
+    const project=currentLedger==='生意'?(document.getElementById('inProject').value||''):'';
+    db.transactions.push({id:uid(),date,ledger:currentLedger,type:currentType,category:catId,account:accId,amount:amt,note,recorder,project});
   }
   db.transactions.sort((a,b)=>b.date.localeCompare(a.date));
   saveLocal();
@@ -840,12 +875,14 @@ function renderList(){
   const month=document.getElementById('filterMonth').value;
   const type=document.getElementById('filterType').value;
   const cat=document.getElementById('filterCat').value;
+  const proj=document.getElementById('filterProject').value;
 
   let txs=db.transactions.filter(t=>{
     if(ledger&&t.ledger!==ledger)return false;
     if(month&&!t.date.startsWith(month))return false;
     if(type&&t.type!==type)return false;
     if(cat&&t.category!==cat)return false;
+    if(proj&&(t.project||'')!==proj)return false;
     return true;
   });
 
@@ -883,10 +920,11 @@ function renderList(){
       const sign=(t.type==='expense'||t.type==='transfer_out')?'-':'+';
       const cls=(t.type==='expense'||t.type==='transfer_out')?'expense':'income';
       const ledgerTag=t.ledger==='家用'?'<span class="tag tag-home">家用</span>':'<span class="tag tag-biz">生意</span>';
+      const projTag=t.project?`<span class="tag" style="background:#f3e8ff;color:#7e22ce;">${t.project}</span>`:'';
       html+=`<div class="tx-item" onclick="openEdit('${t.id}')">
         <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
         <div class="tx-info">
-          <div class="tx-cat">${catName}${ledgerTag}</div>
+          <div class="tx-cat">${catName}${ledgerTag}${projTag}</div>
           <div class="tx-sub">${accName}${t.recorder?' · 👤'+t.recorder:''}${t.note?' · '+t.note:''}</div>
         </div>
         <div class="tx-amount ${cls}">${sign}${fmtMoney(t.amount)}</div>
@@ -1136,6 +1174,11 @@ function renderReport(){
   }
   if(incTxs.length){
     html+=buildCatReport('收入分類','income',incTxs,totalIncome);
+  }
+
+  // 生意帳才顯示案場損益
+  if(ledger==='生意'){
+    html+=buildProjectReport(month);
   }
 
   // 戶頭餘額（本月流量）
@@ -1390,6 +1433,7 @@ function populateRecorders(){
 }
 
 function renderSettings(){
+  renderProjectList();
   renderMemberList();
   renderAccountList();
   renderCategoryList();
@@ -1745,6 +1789,127 @@ function populateFilterCats(){
 //  renderAll
 // ═══════════════════════════════════════════════
 // ═══════════════════════════════════════════════
+//  案場管理
+// ═══════════════════════════════════════════════
+function renderProjectList(){
+  if(!db.projects)db.projects=[];
+  const el=document.getElementById('projectList');
+  if(!el)return;
+  if(!db.projects.length){el.innerHTML='<div style="color:var(--gray);font-size:.85rem;">尚無案場</div>';return;}
+  el.innerHTML=db.projects.map(p=>{
+    const txs=db.transactions.filter(t=>t.project===p.id&&t.ledger==='生意');
+    const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+    const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+    const net=income-expense;
+    return`<div class="setting-item">
+      <div style="flex:1;">
+        <div class="si-label">🏗 ${p.name}</div>
+        <div class="si-sub"><span style="color:var(--success)">+${fmtMoney(income)}</span> <span style="color:var(--danger)">-${fmtMoney(expense)}</span> 結餘 <b style="color:${net>=0?'var(--success)':'var(--danger)'};">${fmtMoney(net)}</b></div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="deleteProject('${p.id}')">刪除</button>
+    </div>`;
+  }).join('');
+}
+
+function openAddProject(){
+  document.getElementById('projectName').value='';
+  openModal('modalProject');
+}
+
+function saveProject(){
+  const name=document.getElementById('projectName').value.trim();
+  if(!name){showToast('請輸入案場名稱','err');return;}
+  if(!db.projects)db.projects=[];
+  if(db.projects.find(p=>p.name===name)){showToast('此案場已存在','err');return;}
+  db.projects.push({id:'prj_'+Date.now(),name});
+  saveLocal();closeModal('modalProject');
+  renderProjectList();populateProjectSelect();populateFilterProjects();
+  showToast('✓ 案場新增成功');autoSync();
+}
+
+function deleteProject(id){
+  if(!confirm('確定刪除？已記錄的交易不受影響。'))return;
+  db.projects=db.projects.filter(p=>p.id!==id);
+  saveLocal();renderProjectList();populateProjectSelect();populateFilterProjects();
+  showToast('已刪除');autoSync();
+}
+
+function populateProjectSelect(){
+  const sel=document.getElementById('inProject');
+  if(!sel)return;
+  if(!db.projects)db.projects=[];
+  sel.innerHTML='<option value="">未分配</option>'+db.projects.map(p=>`<option value="${p.id}">🏗 ${p.name}</option>`).join('');
+}
+
+function populateFilterProjects(){
+  const sel=document.getElementById('filterProject');
+  if(!sel)return;
+  if(!db.projects)db.projects=[];
+  sel.innerHTML='<option value="">所有案場</option>'+db.projects.map(p=>`<option value="${p.id}">🏗 ${p.name}</option>`).join('');
+}
+
+function buildProjectReport(month){
+  if(!db.projects||!db.projects.length)return'';
+  let html=`<div class="card"><div class="card-title">案場損益</div>`;
+  db.projects.forEach(p=>{
+    const txs=db.transactions.filter(t=>t.project===p.id&&t.ledger==='生意'&&(!month||t.date.startsWith(month)));
+    if(!txs.length)return;
+    const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+    const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+    const net=income-expense;
+    const netColor=net>=0?'var(--success)':'var(--danger)';
+    html+=`<div class="setting-item" onclick="openProjectDetail('${p.id}','${month}')" style="cursor:pointer;">
+      <div style="flex:1;">
+        <div class="si-label">🏗 ${p.name}</div>
+        <div class="si-sub" style="margin-top:3px;">
+          <span style="color:var(--success);">收 ${fmtMoney(income)}</span>
+          <span style="color:var(--danger);">支 ${fmtMoney(expense)}</span>
+        </div>
+      </div>
+      <div style="text-align:right;margin-right:6px;">
+        <div style="font-size:.72rem;color:var(--gray);">結餘</div>
+        <div style="font-size:1rem;font-weight:700;color:${netColor};">${net>=0?'+':''}${fmtMoney(net)}</div>
+      </div>
+      <span style="color:var(--gray);">›</span>
+    </div>`;
+  });
+  html+=`</div>`;
+  return html;
+}
+
+let _projDetailId='',_projDetailMonth='';
+function openProjectDetail(projId,month){
+  _projDetailId=projId;_projDetailMonth=month;
+  const p=db.projects.find(x=>x.id===projId);
+  const txs=db.transactions.filter(t=>t.project===projId&&t.ledger==='生意'&&(!month||t.date.startsWith(month)));
+  const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const net=income-expense;
+  document.getElementById('catDetailTitle').textContent=`🏗 ${p?p.name:'案場'}`;
+  document.getElementById('catDetailSummary').innerHTML=
+    `<span style="color:var(--success)">收 +${fmtMoney(income)}</span>　<span style="color:var(--danger)">支 -${fmtMoney(expense)}</span>　結餘 <b style="color:${net>=0?'var(--success)':'var(--danger)'};">${net>=0?'+':''}${fmtMoney(net)}</b>`;
+  let html='<div class="tx-list" style="padding:4px 0;">';
+  txs.sort((a,b)=>b.date.localeCompare(a.date)).forEach(t=>{
+    const cat=db.categories.find(c=>c.id===t.category);
+    const acc=db.accounts.find(a=>a.id===t.account);
+    const sign=t.type==='expense'?'-':'+';
+    const cls=t.type==='expense'?'expense':'income';
+    html+=`<div class="tx-item">
+      <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${cat?getCatIcon(cat.name):'📋'}</div>
+      <div class="tx-info">
+        <div class="tx-cat">${cat?cat.name:'未知'} <span style="font-size:.72rem;color:var(--gray);">${fmtDate(t.date)}</span></div>
+        <div class="tx-sub">${acc?acc.name:''}${t.note?' · '+t.note:''}</div>
+      </div>
+      <div class="tx-amount ${cls}">${sign}${fmtMoney(t.amount)}</div>
+    </div>`;
+  });
+  html+='</div>';
+  if(!txs.length)html='<div class="empty">沒有記錄</div>';
+  document.getElementById('catDetailContent').innerHTML=html;
+  openModal('modalCatDetail');
+}
+
+// ═══════════════════════════════════════════════
 //  走勢圖
 // ═══════════════════════════════════════════════
 function drawTrendChart(){
@@ -1972,6 +2137,7 @@ function renderAll(){
   populateAccounts('scAccount');
   populateFilterCats();
   populateRecorders();
+  populateFilterProjects();
   renderShortcutsRow();
 }
 

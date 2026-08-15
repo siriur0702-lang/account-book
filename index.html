@@ -1038,10 +1038,10 @@ function renderDayReport(){
   const todayExpense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
   const todayNet=todayIncome-todayExpense;
 
-  // 所有戶頭目前餘額
+  // 所有戶頭到當日結束的餘額（只算到選擇日期為止）
   const totalAsset=db.accounts.reduce((s,acc)=>{
     const init=acc.balance||0;
-    const net=db.transactions.filter(t=>t.account===acc.id)
+    const net=db.transactions.filter(t=>t.account===acc.id&&t.date<=date)
       .reduce((s2,t)=>s2+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
     return s+init+net;
   },0);

@@ -190,6 +190,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786754967650_nx3r7",
+      "date": "2026-08-15",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_01",
+      "amount": 85,
+      "note": "早餐",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",

@@ -858,8 +858,8 @@ function renderList(){
       const icon=cat?getCatIcon(cat.name):'📋';
       const catName=cat?cat.name:'未知分類';
       const accName=acc?acc.name:'未知戶頭';
-      const sign=t.type==='expense'?'-':'+';
-      const cls=t.type==='expense'?'expense':'income';
+      const sign=(t.type==='expense'||t.type==='transfer_out')?'-':'+';
+      const cls=(t.type==='expense'||t.type==='transfer_out')?'expense':'income';
       const ledgerTag=t.ledger==='家用'?'<span class="tag tag-home">家用</span>':'<span class="tag tag-biz">生意</span>';
       html+=`<div class="tx-item" onclick="openEdit('${t.id}')">
         <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
@@ -1180,8 +1180,8 @@ function renderAccDetail(){
       const cat=db.categories.find(c=>c.id===t.category);
       const icon=cat?getCatIcon(cat.name):'📋';
       const catName=cat?cat.name:'未知';
-      const sign=t.type==='expense'?'-':'+';
-      const cls=t.type==='expense'?'expense':'income';
+      const sign=(t.type==='expense'||t.type==='transfer_out')?'-':'+';
+      const cls=(t.type==='expense'||t.type==='transfer_out')?'expense':'income';
       html+=`<div class="tx-item" style="margin-bottom:6px;">
         <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
         <div class="tx-info">

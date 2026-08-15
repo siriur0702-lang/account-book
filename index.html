@@ -921,7 +921,8 @@ function renderList(){
       const sign=(t.type==='expense'||t.type==='transfer_out')?'-':'+';
       const cls=(t.type==='expense'||t.type==='transfer_out')?'expense':'income';
       const ledgerTag=t.ledger==='家用'?'<span class="tag tag-home">家用</span>':'<span class="tag tag-biz">生意</span>';
-      const projTag=t.project?`<span class="tag" style="background:#f3e8ff;color:#7e22ce;">${t.project}</span>`:'';
+      const projObj=t.project&&db.projects?db.projects.find(p=>p.id===t.project):null;
+      const projTag=projObj?`<span class="tag" style="background:#f3e8ff;color:#7e22ce;">🏗 ${projObj.name}</span>`:'';
       html+=`<div class="tx-item" onclick="openEdit('${t.id}')">
         <div class="tx-icon" style="background:${t.type==='expense'?'#fef2f2':'#f0fdf4'}">${icon}</div>
         <div class="tx-info">

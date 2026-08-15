@@ -179,6 +179,17 @@
   ],
   "transactions": [
     {
+      "id": "tx_1786754446646_rs60i",
+      "date": "2026-08-15",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_1786667097841",
+      "amount": 67,
+      "note": "食物",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",
@@ -253,17 +264,6 @@
       "account": "a_1786667097841",
       "amount": 1600,
       "note": "汽車零件 小黑",
-      "recorder": "熊"
-    },
-    {
-      "id": "tx_1786754446646_rs60i",
-      "date": "2026-08-13",
-      "ledger": "家用",
-      "type": "expense",
-      "category": "c_f01",
-      "account": "a_1786667097841",
-      "amount": 67,
-      "note": "食物",
       "recorder": "熊"
     },
     {

@@ -271,13 +271,14 @@
     {
       "id": "tx_1786798775074_66dkk",
       "date": "2026-08-15",
-      "ledger": "家用",
+      "ledger": "個人",
       "type": "expense",
-      "category": "c_f01",
+      "category": "c_p01",
       "account": "a_01",
       "amount": 205,
       "note": "晚餐",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": ""
     },
     {
       "id": "tx_1786799835028_6gl76",

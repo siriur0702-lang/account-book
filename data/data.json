@@ -209,7 +209,8 @@
       "account": "a_01",
       "amount": 180,
       "note": "開關盲蓋 梅山口",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": "prj_1786799109661"
     },
     {
       "id": "tx_1786786840109_kwtfv",

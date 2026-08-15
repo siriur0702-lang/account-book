@@ -244,23 +244,39 @@ canvas#trendChart{width:100%;display:block;}
 </div>
 
 <div id="page-report" class="page">
-  <!-- 走勢圖 -->
-  <div class="chart-wrap">
-    <div class="chart-title">總資產走勢</div>
-    <div class="chart-total" id="chartTotal">--</div>
-    <div class="chart-change" id="chartChange"></div>
-    <canvas id="trendChart" height="120"></canvas>
-    <div style="display:flex;justify-content:space-between;margin-top:4px;" id="chartLabels"></div>
+  <!-- 日/月 切換 -->
+  <div class="seg-control" style="margin-top:4px;">
+    <button class="active" id="rptTabDay" onclick="switchReportTab('day',this)">日報表</button>
+    <button id="rptTabMonth" onclick="switchReportTab('month',this)">月報表</button>
   </div>
 
-  <div class="seg-control" style="margin-top:4px;">
-    <button class="active" onclick="switchReportLedger('家用',this)">家用帳</button>
-    <button onclick="switchReportLedger('生意',this)">生意帳</button>
+  <!-- 日報表 -->
+  <div id="dayReportWrap">
+    <div class="filter-row">
+      <input type="date" id="dayReportDate" onchange="renderDayReport()" style="min-width:140px;">
+    </div>
+    <div id="dayReportContainer"></div>
   </div>
-  <div class="filter-row">
-    <select id="reportMonth" onchange="renderReport()" style="min-width:130px;"></select>
+
+  <!-- 月報表 -->
+  <div id="monthReportWrap" style="display:none;">
+    <!-- 走勢圖 -->
+    <div class="chart-wrap">
+      <div class="chart-title">總資產走勢</div>
+      <div class="chart-total" id="chartTotal">--</div>
+      <div class="chart-change" id="chartChange"></div>
+      <canvas id="trendChart" height="120"></canvas>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;" id="chartLabels"></div>
+    </div>
+    <div class="seg-control">
+      <button class="active" onclick="switchReportLedger('家用',this)">家用帳</button>
+      <button onclick="switchReportLedger('生意',this)">生意帳</button>
+    </div>
+    <div class="filter-row">
+      <select id="reportMonth" onchange="renderReport()" style="min-width:130px;"></select>
+    </div>
+    <div id="reportContainer"></div>
   </div>
-  <div id="reportContainer"></div>
 </div>
 
 <div id="page-settings" class="page">
@@ -706,10 +722,15 @@ function showPage(id,btn){
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.navbar button').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  const titles={add:'記帳',list:'明細',report:'月報表',settings:'設定'};
+  const titles={add:'記帳',list:'明細',report:'報表',settings:'設定'};
   document.getElementById('topTitle').textContent=titles[id]||'記帳本';
+  if(id==='add')document.getElementById('inDate').value=new Date().toISOString().slice(0,10);
   if(id==='list')renderList();
-  if(id==='report')renderReport();
+  if(id==='report'){
+    const today=new Date().toISOString().slice(0,10);
+    document.getElementById('dayReportDate').value=today;
+    renderDayReport();
+  }
   if(id==='settings')renderSettings();
 }
 
@@ -806,6 +827,7 @@ function submitEntry(){
 
   document.getElementById('inAmount').value='';
   document.getElementById('inNote').value='';
+  document.getElementById('inDate').value=new Date().toISOString().slice(0,10);
   showToast('✓ 已記錄，同步中…');
   autoSync();
 }
@@ -952,6 +974,127 @@ function deleteEntry(){
   renderList();
   showToast('已刪除，同步中…');
   autoSync();
+}
+
+// ═══════════════════════════════════════════════
+//  日報表
+// ═══════════════════════════════════════════════
+let currentReportTab='day';
+
+function switchReportTab(tab,btn){
+  currentReportTab=tab;
+  document.querySelectorAll('#page-report .seg-control:first-child button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('dayReportWrap').style.display=tab==='day'?'block':'none';
+  document.getElementById('monthReportWrap').style.display=tab==='month'?'block':'none';
+  if(tab==='day')renderDayReport();
+  if(tab==='month'){drawTrendChart();renderReport();}
+}
+
+function renderDayReport(){
+  const date=document.getElementById('dayReportDate').value;
+  if(!date)return;
+  const txs=db.transactions.filter(t=>t.date===date&&t.type!=='transfer_out'&&t.type!=='transfer_in');
+
+  const todayIncome=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const todayExpense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const todayNet=todayIncome-todayExpense;
+
+  // 所有戶頭目前餘額
+  const totalAsset=db.accounts.reduce((s,acc)=>{
+    const init=acc.balance||0;
+    const net=db.transactions.filter(t=>t.account===acc.id)
+      .reduce((s2,t)=>s2+((t.type==='income'||t.type==='transfer_in')?t.amount:(t.type==='expense'||t.type==='transfer_out')?-t.amount:0),0);
+    return s+init+net;
+  },0);
+
+  const [y,m,d]=date.split('-');
+  const dateLabel=`${y}年${parseInt(m)}月${parseInt(d)}日`;
+  const weekDay=['日','一','二','三','四','五','六'][new Date(date).getDay()];
+
+  let html=`
+  <div class="card" style="background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:16px;">
+    <div style="font-size:.85rem;opacity:.8;">${dateLabel}（週${weekDay}）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;">
+      <div style="text-align:center;">
+        <div style="font-size:.72rem;opacity:.75;">收入</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#86efac;">+${fmtMoney(todayIncome)}</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:.72rem;opacity:.75;">支出</div>
+        <div style="font-size:1.1rem;font-weight:700;color:#fca5a5;">-${fmtMoney(todayExpense)}</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:.72rem;opacity:.75;">當日結餘</div>
+        <div style="font-size:1.1rem;font-weight:700;color:${todayNet>=0?'#86efac':'#fca5a5'};">${todayNet>=0?'+':''}${fmtMoney(todayNet)}</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.2);display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:.78rem;opacity:.75;">所有帳戶總資產</div>
+      <div style="font-size:1.2rem;font-weight:800;">${fmtMoney(totalAsset)}</div>
+    </div>
+  </div>`;
+
+  // 家用帳
+  html+=buildDaySection('家用',date,txs.filter(t=>t.ledger==='家用'));
+  // 生意帳
+  html+=buildDaySection('生意',date,txs.filter(t=>t.ledger==='生意'));
+
+  if(!txs.length){
+    html+=`<div class="empty" style="padding:24px;"><div>今天還沒有記錄</div></div>`;
+  }
+
+  document.getElementById('dayReportContainer').innerHTML=html;
+}
+
+function buildDaySection(ledger,date,txs){
+  if(!txs.length)return'';
+  const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+  const tag=ledger==='家用'?'tag-home':'tag-biz';
+  let html=`<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="font-weight:700;font-size:.95rem;">${ledger==='家用'?'🏠':'💼'} ${ledger}帳</div>
+      <div style="font-size:.82rem;">
+        ${income?`<span style="color:var(--success)">+${fmtMoney(income)}</span> `:''}
+        ${expense?`<span style="color:var(--danger)">-${fmtMoney(expense)}</span>`:''}
+      </div>
+    </div>`;
+  // 支出
+  const expTxs=txs.filter(t=>t.type==='expense');
+  const incTxs=txs.filter(t=>t.type==='income');
+  if(expTxs.length){
+    html+=`<div style="font-size:.78rem;color:var(--gray);margin-bottom:4px;font-weight:600;">支出</div>`;
+    expTxs.forEach(t=>{
+      const cat=db.categories.find(c=>c.id===t.category);
+      const acc=db.accounts.find(a=>a.id===t.account);
+      html+=`<div style="display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;">
+        <div style="width:28px;text-align:center;font-size:1rem;">${cat?getCatIcon(cat.name):'📋'}</div>
+        <div style="flex:1;margin-left:8px;">
+          <div style="font-size:.88rem;font-weight:600;">${cat?cat.name:'未知分類'}</div>
+          <div style="font-size:.73rem;color:var(--gray);">${acc?acc.name:''}${t.note?' · '+t.note:''}${t.recorder?' · 👤'+t.recorder:''}</div>
+        </div>
+        <div style="font-size:.92rem;font-weight:700;color:var(--danger);">-${fmtMoney(t.amount)}</div>
+      </div>`;
+    });
+  }
+  if(incTxs.length){
+    html+=`<div style="font-size:.78rem;color:var(--gray);margin:8px 0 4px;font-weight:600;">收入</div>`;
+    incTxs.forEach(t=>{
+      const cat=db.categories.find(c=>c.id===t.category);
+      const acc=db.accounts.find(a=>a.id===t.account);
+      html+=`<div style="display:flex;align-items:center;padding:6px 0;border-bottom:1px solid #f3f4f6;">
+        <div style="width:28px;text-align:center;font-size:1rem;">${cat?getCatIcon(cat.name):'📋'}</div>
+        <div style="flex:1;margin-left:8px;">
+          <div style="font-size:.88rem;font-weight:600;">${cat?cat.name:'未知分類'}</div>
+          <div style="font-size:.73rem;color:var(--gray);">${acc?acc.name:''}${t.note?' · '+t.note:''}${t.recorder?' · 👤'+t.recorder:''}</div>
+        </div>
+        <div style="font-size:.92rem;font-weight:700;color:var(--success);">+${fmtMoney(t.amount)}</div>
+      </div>`;
+    });
+  }
+  html+=`</div>`;
+  return html;
 }
 
 // ═══════════════════════════════════════════════

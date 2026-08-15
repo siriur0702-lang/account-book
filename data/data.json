@@ -201,6 +201,17 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1786755338219_jmdkb",
+      "date": "2026-08-15",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b06",
+      "account": "a_01",
+      "amount": 180,
+      "note": "開關盲蓋 梅山口",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",

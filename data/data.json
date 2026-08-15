@@ -383,5 +383,11 @@
     "熊"
   ],
   "shortcuts": [],
-  "budgets": {}
+  "budgets": {},
+  "projects": [
+    {
+      "id": "prj_1786799109661",
+      "name": "梅山口遊客中心"
+    }
+  ]
 }

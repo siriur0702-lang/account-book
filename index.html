@@ -412,6 +412,7 @@ canvas#trendChart{width:100%;display:block;}
     </div>
     <div class="form-group"><label>分類</label><select id="editCategory"></select></div>
     <div class="form-group"><label>戶頭</label><select id="editAccount"></select></div>
+    <div class="form-group" id="editProjectField" style="display:none;"><label>案場</label><select id="editProject"></select></div>
     <div class="form-group"><label>記帳者</label><select id="editRecorder"></select></div>
     <div class="form-group"><label>備註</label><textarea id="editNote"></textarea></div>
     <div style="display:flex;gap:8px;">
@@ -947,12 +948,17 @@ function openEdit(id){
   editSwitchType(t.type);
   populateEditCategories();
   populateRecorders();
+  // 案場欄位
+  const epf=document.getElementById('editProjectField');
+  if(epf)epf.style.display=t.ledger==='生意'?'block':'none';
+  populateEditProjects();
   setTimeout(()=>{
     document.getElementById('editCategory').value=t.category;
     populateEditAccounts();
     setTimeout(()=>{
       document.getElementById('editAccount').value=t.account;
       if(t.recorder)document.getElementById('editRecorder').value=t.recorder;
+      if(t.project)document.getElementById('editProject').value=t.project;
     },10);
   },10);
   openModal('modalEdit');
@@ -972,6 +978,16 @@ function populateEditCategories(){
   const sel=document.getElementById('editCategory');
   const cats=db.categories.filter(c=>c.ledger===ledger);
   sel.innerHTML=cats.map(c=>`<option value="${c.id}">${getCatIcon(c.name)} ${c.name}</option>`).join('');
+  const epf=document.getElementById('editProjectField');
+  if(epf)epf.style.display=ledger==='生意'?'block':'none';
+  populateEditProjects();
+}
+
+function populateEditProjects(){
+  const sel=document.getElementById('editProject');
+  if(!sel)return;
+  if(!db.projects)db.projects=[];
+  sel.innerHTML='<option value="">未分配</option>'+db.projects.map(p=>`<option value="${p.id}">🏗 ${p.name}</option>`).join('');
 }
 
 function populateEditAccounts(){
@@ -994,6 +1010,7 @@ function saveEdit(){
     account:document.getElementById('editAccount').value,
     note:document.getElementById('editNote').value.trim(),
     recorder:document.getElementById('editRecorder').value,
+    project:document.getElementById('editLedger').value==='生意'?(document.getElementById('editProject').value||''):'',
   };
   db.transactions.sort((a,b)=>b.date.localeCompare(a.date));
   saveLocal();

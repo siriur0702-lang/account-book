@@ -233,6 +233,18 @@
       "project": ""
     },
     {
+      "id": "tx_1786898157602_vh2we",
+      "date": "2026-08-16",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b06",
+      "account": "a_01",
+      "amount": 1127,
+      "note": "馬達 排水管 變壓器",
+      "recorder": "熊",
+      "project": "prj_1786799809104"
+    },
+    {
       "id": "tx_1786754446646_rs60i",
       "date": "2026-08-15",
       "ledger": "個人",

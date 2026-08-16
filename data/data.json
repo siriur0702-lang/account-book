@@ -305,6 +305,18 @@
       "project": "prj_1786799809104"
     },
     {
+      "id": "tx_1786887418287_mvvmd",
+      "date": "2026-08-15",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786667097841",
+      "amount": 85,
+      "note": "飲料",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1786705978809_ydevl",
       "date": "2026-08-14",
       "ledger": "生意",

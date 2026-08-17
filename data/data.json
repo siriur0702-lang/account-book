@@ -245,6 +245,18 @@
       "project": "prj_1786799809104"
     },
     {
+      "id": "tx_1786953553674_es6vu",
+      "date": "2026-08-16",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b06",
+      "account": "a_01",
+      "amount": 520,
+      "note": "水管 五金",
+      "recorder": "熊",
+      "project": "prj_1786799809104"
+    },
+    {
       "id": "tx_1786754446646_rs60i",
       "date": "2026-08-15",
       "ledger": "個人",

@@ -221,6 +221,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1786953553674_es6vu",
+      "date": "2026-08-17",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b06",
+      "account": "a_01",
+      "amount": 520,
+      "note": "水管 五金",
+      "recorder": "熊",
+      "project": "prj_1786799809104"
+    },
+    {
       "id": "tx_1786887418287_mvvmd",
       "date": "2026-08-16",
       "ledger": "個人",
@@ -241,18 +253,6 @@
       "account": "a_1786533459145",
       "amount": 1127,
       "note": "馬達 排水管 變壓器",
-      "recorder": "熊",
-      "project": "prj_1786799809104"
-    },
-    {
-      "id": "tx_1786953553674_es6vu",
-      "date": "2026-08-16",
-      "ledger": "生意",
-      "type": "expense",
-      "category": "c_b06",
-      "account": "a_01",
-      "amount": 520,
-      "note": "水管 五金",
       "recorder": "熊",
       "project": "prj_1786799809104"
     },

@@ -233,6 +233,18 @@
       "project": "prj_1786799809104"
     },
     {
+      "id": "tx_1786954082483_2sqd4",
+      "date": "2026-08-17",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_1786667097841",
+      "amount": 43,
+      "note": "喝的",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1786887418287_mvvmd",
       "date": "2026-08-16",
       "ledger": "個人",

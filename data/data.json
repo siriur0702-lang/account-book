@@ -233,6 +233,28 @@
       "project": ""
     },
     {
+      "id": "tx_1787052550134_gl2vr",
+      "date": "2026-08-18",
+      "ledger": "個人",
+      "type": "transfer_out",
+      "category": "",
+      "account": "a_1786526188739",
+      "amount": 1000,
+      "note": "[轉帳] ",
+      "recorder": "熊"
+    },
+    {
+      "id": "tx_1787052550134_bdxea",
+      "date": "2026-08-18",
+      "ledger": "個人",
+      "type": "transfer_in",
+      "category": "",
+      "account": "a_01",
+      "amount": 1000,
+      "note": "[轉帳] ",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1786953553674_es6vu",
       "date": "2026-08-17",
       "ledger": "生意",

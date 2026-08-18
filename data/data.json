@@ -267,6 +267,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787054221197_229zh",
+      "date": "2026-08-18",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786667097841",
+      "amount": 85,
+      "note": "氣泡水",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1786953553674_es6vu",
       "date": "2026-08-17",
       "ledger": "生意",

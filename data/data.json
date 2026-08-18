@@ -255,6 +255,18 @@
       "recorder": "熊"
     },
     {
+      "id": "tx_1787054210343_pjunn",
+      "date": "2026-08-18",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_01",
+      "amount": 245,
+      "note": "晚餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1786953553674_es6vu",
       "date": "2026-08-17",
       "ledger": "生意",

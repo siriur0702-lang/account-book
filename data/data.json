@@ -257,6 +257,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787023603704_kn559",
+      "date": "2026-08-17",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_01",
+      "amount": 230,
+      "note": "午餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1786887418287_mvvmd",
       "date": "2026-08-16",
       "ledger": "個人",

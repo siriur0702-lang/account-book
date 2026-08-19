@@ -233,6 +233,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787129856702_3yhax",
+      "date": "2026-08-19",
+      "ledger": "家用",
+      "type": "income",
+      "category": "c_f12",
+      "account": "a_01",
+      "amount": 2500,
+      "note": "地板錢",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787023603704_kn559",
       "date": "2026-08-18",
       "ledger": "家用",

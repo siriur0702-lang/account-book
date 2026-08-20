@@ -233,6 +233,18 @@
       "project": "prj_1786799809104"
     },
     {
+      "id": "tx_1787198017362_bu3qa",
+      "date": "2026-08-20",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_01",
+      "amount": 140,
+      "note": "午餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787129826832_tc3cp",
       "date": "2026-08-19",
       "ledger": "個人",

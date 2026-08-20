@@ -245,6 +245,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787186130707_wcta7",
+      "date": "2026-08-19",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b05",
+      "account": "a_1786533459145",
+      "amount": 1200,
+      "note": "水槽櫃子及其他運費",
+      "recorder": "熊",
+      "project": "prj_1786799809104"
+    },
+    {
       "id": "tx_1787023603704_kn559",
       "date": "2026-08-18",
       "ledger": "家用",

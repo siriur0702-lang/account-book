@@ -245,6 +245,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787198206604_qnp39",
+      "date": "2026-08-20",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_1786533459145",
+      "amount": 145,
+      "note": "鵝的東西",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787129826832_tc3cp",
       "date": "2026-08-19",
       "ledger": "個人",

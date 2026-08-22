@@ -233,6 +233,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787372127887_ba1eq",
+      "date": "2026-08-21",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f02",
+      "account": "a_01",
+      "amount": 8800,
+      "note": "修車 小黑",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787186130707_wcta7",
       "date": "2026-08-20",
       "ledger": "生意",

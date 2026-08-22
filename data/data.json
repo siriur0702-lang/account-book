@@ -221,6 +221,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1787372107832_mwcmt",
+      "date": "2026-08-22",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f01",
+      "account": "a_01",
+      "amount": 185,
+      "note": "午餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787186130707_wcta7",
       "date": "2026-08-20",
       "ledger": "生意",

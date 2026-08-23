@@ -245,6 +245,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787456072727_25pqy",
+      "date": "2026-08-21",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p05",
+      "account": "a_01",
+      "amount": 700,
+      "note": "健身",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787186130707_wcta7",
       "date": "2026-08-20",
       "ledger": "生意",

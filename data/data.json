@@ -222,11 +222,11 @@
   "transactions": [
     {
       "id": "tx_1787559957441_yyrkn",
-      "date": "2026-08-23",
+      "date": "2026-08-24",
       "ledger": "個人",
       "type": "expense",
       "category": "c_p01",
-      "account": "a_01",
+      "account": "a_1786667097841",
       "amount": 55,
       "note": "仙草茶",
       "recorder": "熊",

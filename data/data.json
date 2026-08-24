@@ -221,6 +221,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1787559957441_yyrkn",
+      "date": "2026-08-23",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_01",
+      "amount": 55,
+      "note": "仙草茶",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787372107832_mwcmt",
       "date": "2026-08-22",
       "ledger": "家用",

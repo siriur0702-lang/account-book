@@ -217,6 +217,12 @@
       "name": "其他收入",
       "ledger": "個人",
       "fixed": true
+    },
+    {
+      "id": "c_1787697533688",
+      "name": "繳卡費",
+      "ledger": "個人",
+      "fixed": false
     }
   ],
   "transactions": [

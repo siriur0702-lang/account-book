@@ -233,6 +233,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787677622059_ts0bp",
+      "date": "2026-08-26",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786533459145",
+      "amount": 248,
+      "note": "除臭噴霧",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787559957441_yyrkn",
       "date": "2026-08-24",
       "ledger": "個人",

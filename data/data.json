@@ -251,6 +251,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787697555558_gpq7m",
+      "date": "2026-08-25",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_1787697533688",
+      "account": "a_1786526188739",
+      "amount": 26827,
+      "note": "8月中信卡費",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787559957441_yyrkn",
       "date": "2026-08-24",
       "ledger": "個人",

@@ -233,6 +233,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787632921223_didg4",
+      "date": "2026-08-24",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p02",
+      "account": "a_1786667097841",
+      "amount": 1170,
+      "note": "油錢",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787372107832_mwcmt",
       "date": "2026-08-22",
       "ledger": "家用",

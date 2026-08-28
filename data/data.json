@@ -239,6 +239,18 @@
       "project": ""
     },
     {
+      "id": "tx_1787908660462_9hahz",
+      "date": "2026-08-28",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f02",
+      "account": "a_01",
+      "amount": 4500,
+      "note": "車子換玻璃",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787677600369_sd2yj",
       "date": "2026-08-26",
       "ledger": "家用",

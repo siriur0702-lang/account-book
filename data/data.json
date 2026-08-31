@@ -47,6 +47,12 @@
       "name": "中信卡",
       "type": "bank",
       "balance": 0
+    },
+    {
+      "id": "a_1788220272244",
+      "name": "股票戶頭",
+      "type": "other",
+      "balance": 0
     }
   ],
   "categories": [

@@ -427,6 +427,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788220679711_gpyx7",
+      "date": "2026-08-28",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_01",
+      "amount": 1000,
+      "note": "馬齒莧",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787677600369_sd2yj",
       "date": "2026-08-26",
       "ledger": "家用",

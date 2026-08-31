@@ -223,6 +223,12 @@
       "name": "繳卡費",
       "ledger": "個人",
       "fixed": false
+    },
+    {
+      "id": "c_1788219923269",
+      "name": "耗材",
+      "ledger": "個人",
+      "fixed": false
     }
   ],
   "transactions": [

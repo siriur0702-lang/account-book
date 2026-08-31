@@ -275,6 +275,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788149020640_s9rq4",
+      "date": "2026-08-30",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_1786533459145",
+      "amount": 550,
+      "note": "椰子機電池",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787895917425_j44br",
       "date": "2026-08-28",
       "ledger": "個人",

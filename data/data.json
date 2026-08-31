@@ -269,6 +269,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788219936761_w8oti",
+      "date": "2026-08-31",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_1788219923269",
+      "account": "a_1786533459145",
+      "amount": 5800,
+      "note": "鋁箔杯（烤布蕾",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788063553157_oaaxv",
       "date": "2026-08-30",
       "ledger": "個人",

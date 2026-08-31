@@ -227,6 +227,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1788219053246_hde1a",
+      "date": "2026-09-01",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p05",
+      "account": "a_01",
+      "amount": 435,
+      "note": "按摩工具",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788109151141_jo1tr",
       "date": "2026-08-31",
       "ledger": "家用",
@@ -235,18 +247,6 @@
       "account": "a_1786533459145",
       "amount": 1563,
       "note": "烤布蕾杯子運費",
-      "recorder": "熊",
-      "project": ""
-    },
-    {
-      "id": "tx_1788219053246_hde1a",
-      "date": "2026-08-31",
-      "ledger": "個人",
-      "type": "expense",
-      "category": "c_p05",
-      "account": "a_01",
-      "amount": 435,
-      "note": "按摩工具",
       "recorder": "熊",
       "project": ""
     },

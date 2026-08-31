@@ -241,6 +241,12 @@
       "name": "投資收入",
       "ledger": "個人",
       "fixed": false
+    },
+    {
+      "id": "c_1788220409427",
+      "name": "買股票",
+      "ledger": "個人",
+      "fixed": false
     }
   ],
   "transactions": [

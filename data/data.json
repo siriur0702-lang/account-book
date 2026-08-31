@@ -287,6 +287,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788220083699_tk13m",
+      "date": "2026-08-31",
+      "ledger": "個人",
+      "type": "income",
+      "category": "c_1788220073182",
+      "account": "a_1786526824787",
+      "amount": 49000,
+      "note": "投資收入",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788063553157_oaaxv",
       "date": "2026-08-30",
       "ledger": "個人",

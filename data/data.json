@@ -333,6 +333,28 @@
       "project": "prj_1786799109661"
     },
     {
+      "id": "tx_1788220438157_h0nke",
+      "date": "2026-08-31",
+      "ledger": "個人",
+      "type": "transfer_out",
+      "category": "",
+      "account": "a_1786526856559",
+      "amount": 84063,
+      "note": "[轉帳] 買股票",
+      "recorder": "熊"
+    },
+    {
+      "id": "tx_1788220438157_lggur",
+      "date": "2026-08-31",
+      "ledger": "個人",
+      "type": "transfer_in",
+      "category": "",
+      "account": "a_1788220272244",
+      "amount": 84063,
+      "note": "[轉帳] 買股票",
+      "recorder": "熊"
+    },
+    {
       "id": "tx_1788063553157_oaaxv",
       "date": "2026-08-30",
       "ledger": "個人",

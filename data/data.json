@@ -299,6 +299,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788220173317_g02uh",
+      "date": "2026-08-31",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b07",
+      "account": "a_1786526856559",
+      "amount": 30975,
+      "note": "更換洗手槽×2 查修線路",
+      "recorder": "熊",
+      "project": "prj_1786799109661"
+    },
+    {
       "id": "tx_1788063553157_oaaxv",
       "date": "2026-08-30",
       "ledger": "個人",

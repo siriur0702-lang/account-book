@@ -369,6 +369,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788220952001_zwaey",
+      "date": "2026-08-31",
+      "ledger": "家用",
+      "type": "income",
+      "category": "c_f12",
+      "account": "a_01",
+      "amount": 550,
+      "note": "牛奶錢",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788063553157_oaaxv",
       "date": "2026-08-30",
       "ledger": "個人",

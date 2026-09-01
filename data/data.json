@@ -301,9 +301,9 @@
     {
       "id": "tx_1788219936761_w8oti",
       "date": "2026-08-31",
-      "ledger": "個人",
+      "ledger": "家用",
       "type": "expense",
-      "category": "c_1788219923269",
+      "category": "c_f01",
       "account": "a_1786533459145",
       "amount": 5800,
       "note": "鋁箔杯（烤布蕾",

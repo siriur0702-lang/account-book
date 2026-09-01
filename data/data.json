@@ -371,9 +371,9 @@
     {
       "id": "tx_1788220952001_zwaey",
       "date": "2026-08-31",
-      "ledger": "家用",
+      "ledger": "個人",
       "type": "income",
-      "category": "c_f12",
+      "category": "c_p01",
       "account": "a_01",
       "amount": 550,
       "note": "牛奶錢",

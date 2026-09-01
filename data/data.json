@@ -350,12 +350,13 @@
       "id": "tx_1788220438157_lggur",
       "date": "2026-08-31",
       "ledger": "個人",
-      "type": "transfer_in",
-      "category": "",
+      "type": "income",
+      "category": "c_1788220409427",
       "account": "a_1788220272244",
       "amount": 84063,
       "note": "[轉帳] 買股票",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": ""
     },
     {
       "id": "tx_1788220722195_r4keb",

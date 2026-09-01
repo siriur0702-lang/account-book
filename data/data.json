@@ -287,6 +287,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788269577804_v16d7",
+      "date": "2026-09-01",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b07",
+      "account": "a_01",
+      "amount": 2000,
+      "note": "修理熱水器（林先生",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788109151141_jo1tr",
       "date": "2026-08-31",
       "ledger": "家用",

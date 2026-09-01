@@ -997,6 +997,17 @@
       "category": "c_f04",
       "account": "a_1786526188739",
       "endMonth": "2029-07"
+    },
+    {
+      "id": "rec_1788220860376",
+      "name": "車貸",
+      "amount": 11776,
+      "day": 9,
+      "type": "expense",
+      "ledger": "生意",
+      "category": "c_b05",
+      "account": "a_1786526188739",
+      "endMonth": ""
     }
   ],
   "members": [

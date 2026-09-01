@@ -338,7 +338,7 @@
       "id": "tx_1788220438157_h0nke",
       "date": "2026-08-31",
       "ledger": "個人",
-      "type": "income",
+      "type": "expense",
       "category": "c_1788220409427",
       "account": "a_1786526856559",
       "amount": 84063,

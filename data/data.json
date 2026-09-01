@@ -275,6 +275,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788269558326_76ur1",
+      "date": "2026-09-01",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_1788219923269",
+      "account": "a_01",
+      "amount": 299,
+      "note": "拍照大頭照",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788109151141_jo1tr",
       "date": "2026-08-31",
       "ledger": "家用",

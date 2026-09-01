@@ -338,12 +338,13 @@
       "id": "tx_1788220438157_h0nke",
       "date": "2026-08-31",
       "ledger": "個人",
-      "type": "transfer_out",
-      "category": "",
+      "type": "income",
+      "category": "c_1788220409427",
       "account": "a_1786526856559",
       "amount": 84063,
       "note": "[轉帳] 買股票",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": ""
     },
     {
       "id": "tx_1788220438157_lggur",

@@ -988,17 +988,6 @@
   ],
   "recurring": [
     {
-      "id": "rec_1786533161605",
-      "name": "車貸",
-      "amount": 11776,
-      "day": 9,
-      "type": "expense",
-      "ledger": "家用",
-      "category": "c_f04",
-      "account": "a_1786526188739",
-      "endMonth": "2029-07"
-    },
-    {
       "id": "rec_1788220860376",
       "name": "車貸",
       "amount": 11776,

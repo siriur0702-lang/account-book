@@ -315,6 +315,7 @@ canvas#trendChart{width:100%;display:block;}
       <div class="seg-control" id="catSegControl" style="flex:1;margin-bottom:0;"></div>
       <button class="btn btn-gray btn-sm" onclick="openAddLedger()">+帳本</button>
     </div>
+    <div id="ledgerDeleteWrap"></div>
     <div id="categoryList"></div>
   </div>
 
@@ -2200,6 +2201,37 @@ function renderCatSegControl(){
   el.innerHTML=db.ledgers.map(l=>
     `<button ${l===currentCatTab?'class="active"':''} onclick="switchCatTab('${l}',this)">${l}</button>`
   ).join('');
+  const wrap=document.getElementById('ledgerDeleteWrap');
+  if(!wrap)return;
+  if(DEFAULT_LEDGERS.includes(currentCatTab)){
+    wrap.innerHTML='';
+  } else {
+    wrap.innerHTML=`<div style="margin-bottom:8px;">
+      <button class="btn btn-danger btn-sm" onclick="deleteLedger('${currentCatTab}')">刪除「${currentCatTab}」帳本</button>
+    </div>`;
+  }
+}
+
+function deleteLedger(name){
+  if(DEFAULT_LEDGERS.includes(name)){showToast('預設帳本無法刪除','err');return;}
+  const hasTxs=db.transactions.some(t=>t.ledger===name);
+  const msg=hasTxs
+    ?`「${name}」帳本有交易紀錄，\n刪除後該帳本的交易將從分類報表移除。\n確定要刪除？`
+    :`確定刪除「${name}」帳本？\n該帳本的分類也會一併刪除。`;
+  if(!confirm(msg))return;
+  db.ledgers=db.ledgers.filter(l=>l!==name);
+  db.categories=db.categories.filter(c=>c.ledger!==name);
+  if(currentCatTab===name)currentCatTab=db.ledgers[0]||'家用';
+  if(currentLedger===name)currentLedger=db.ledgers[0]||'家用';
+  if(currentReportLedger===name)currentReportLedger='全部';
+  saveLocal();
+  renderLedgerSegControl();
+  renderReportLedgerSegControl();
+  renderCatSegControl();
+  renderCategoryList();
+  populateLedgerSelects();
+  showToast('已刪除帳本「'+name+'」');
+  autoSync();
 }
 
 function openAddLedger(){

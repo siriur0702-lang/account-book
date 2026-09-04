@@ -503,6 +503,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788536509081_t84n3",
+      "date": "2026-08-28",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_1787697533688",
+      "account": "a_1786526856559",
+      "amount": 32000,
+      "note": "富邦卡費",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1787677600369_sd2yj",
       "date": "2026-08-26",
       "ledger": "家用",

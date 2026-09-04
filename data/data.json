@@ -403,9 +403,9 @@
     {
       "id": "tx_1788220438157_lggur",
       "date": "2026-08-31",
-      "ledger": "個人",
+      "ledger": "投資",
       "type": "income",
-      "category": "c_1788220409427",
+      "category": "c_1788537846773",
       "account": "a_1788220272244",
       "amount": 84063,
       "note": "[轉帳] 買股票",

@@ -1000,9 +1000,9 @@
     {
       "id": "tx_1786533466155_rxf06",
       "date": "2026-08-12",
-      "ledger": "鵝代收",
+      "ledger": "家用",
       "type": "expense",
-      "category": "",
+      "category": "c_1786533432431",
       "account": "a_1786533459145",
       "amount": 1611,
       "note": "椅子",

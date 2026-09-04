@@ -247,6 +247,12 @@
       "name": "買股票",
       "ledger": "個人",
       "fixed": false
+    },
+    {
+      "id": "c_1788536722706",
+      "name": "材料",
+      "ledger": "烤布蕾",
+      "fixed": false
     }
   ],
   "transactions": [

@@ -1011,13 +1011,14 @@
     {
       "id": "tx_1786533482788_rfvpy",
       "date": "2026-08-12",
-      "ledger": "家用",
+      "ledger": "鵝代收",
       "type": "expense",
-      "category": "c_f08",
+      "category": "",
       "account": "a_1786533459145",
       "amount": 334,
       "note": "資料夾",
-      "recorder": "熊"
+      "recorder": "熊",
+      "project": ""
     },
     {
       "id": "tx_1786592028175_wv82s",

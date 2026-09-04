@@ -253,6 +253,12 @@
       "name": "材料",
       "ledger": "烤布蕾",
       "fixed": false
+    },
+    {
+      "id": "c_1788537846773",
+      "name": "股票",
+      "ledger": "投資",
+      "fixed": false
     }
   ],
   "transactions": [

@@ -112,6 +112,7 @@ body{font-family:'Helvetica Neue',Arial,sans-serif;background:#f0f2f5;color:#222
 .tag-biz{background:#fef3c7;color:#92400e;}
 .tag-personal{background:#fce7f3;color:#9d174d;}
 .tag-fixed{background:#f0fdf4;color:#166534;}
+.tag-custom{background:#e9d5ff;color:#6d28d9;}
 
 /* ── 模態框 ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:flex-end;justify-content:center;}
@@ -174,11 +175,7 @@ canvas#trendChart{width:100%;display:block;}
 <!-- 頁面容器 -->
 <div id="page-add" class="page active">
   <!-- 帳本切換 -->
-  <div class="seg-control" style="margin-top:4px;">
-    <button class="active" onclick="switchLedger('家用',this)">家用帳</button>
-    <button onclick="switchLedger('生意',this)">生意帳</button>
-    <button onclick="switchLedger('個人',this)">個人帳</button>
-  </div>
+  <div class="seg-control" id="ledgerSegControl" style="margin-top:4px;"></div>
 
   <!-- 快捷列 -->
   <div class="shortcuts-row" id="shortcutsRow"></div>
@@ -233,12 +230,7 @@ canvas#trendChart{width:100%;display:block;}
 
 <div id="page-list" class="page">
   <div class="filter-row">
-    <select id="filterLedger" onchange="renderList()">
-      <option value="">全部帳本</option>
-      <option value="家用">家用帳</option>
-      <option value="生意">生意帳</option>
-      <option value="個人">個人帳</option>
-    </select>
+    <select id="filterLedger" onchange="renderList()"></select>
     <select id="filterMonth" onchange="renderList()"></select>
     <select id="filterType" onchange="renderList()">
       <option value="">收支全部</option>
@@ -280,11 +272,7 @@ canvas#trendChart{width:100%;display:block;}
       <canvas id="trendChart" height="120"></canvas>
       <div style="display:flex;justify-content:space-between;margin-top:4px;" id="chartLabels"></div>
     </div>
-    <div class="seg-control">
-      <button class="active" onclick="switchReportLedger('家用',this)">家用帳</button>
-      <button onclick="switchReportLedger('生意',this)">生意帳</button>
-      <button onclick="switchReportLedger('個人',this)">個人帳</button>
-    </div>
+    <div class="seg-control" id="reportLedgerSegControl"></div>
     <div class="filter-row">
       <select id="reportMonth" onchange="renderReport()" style="min-width:130px;"></select>
     </div>
@@ -323,10 +311,9 @@ canvas#trendChart{width:100%;display:block;}
       分類管理
       <button class="btn btn-primary btn-sm" onclick="openAddCategory()">+ 新增</button>
     </div>
-    <div class="seg-control" style="margin-bottom:8px;">
-      <button class="active" onclick="switchCatTab('家用',this)">家用</button>
-      <button onclick="switchCatTab('生意',this)">生意</button>
-      <button onclick="switchCatTab('個人',this)">個人</button>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="seg-control" id="catSegControl" style="flex:1;margin-bottom:0;"></div>
+      <button class="btn btn-gray btn-sm" onclick="openAddLedger()">+帳本</button>
     </div>
     <div id="categoryList"></div>
   </div>
@@ -411,9 +398,7 @@ canvas#trendChart{width:100%;display:block;}
     <div class="form-group"><label>金額</label><input type="number" id="editAmount" inputmode="decimal"></div>
     <div class="form-group"><label>日期</label><input type="date" id="editDate"></div>
     <div class="form-group"><label>帳本</label>
-      <select id="editLedger" onchange="populateEditCategories()">
-        <option value="家用">家用帳</option><option value="生意">生意帳</option><option value="個人">個人帳</option>
-      </select>
+      <select id="editLedger" onchange="populateEditCategories()"></select>
     </div>
     <div class="form-group"><label>分類</label><select id="editCategory"></select></div>
     <div class="form-group"><label>戶頭</label><select id="editAccount"></select></div>
@@ -460,12 +445,22 @@ canvas#trendChart{width:100%;display:block;}
     </div>
     <div class="form-group"><label>分類名稱</label><input type="text" id="catName" placeholder="例：外食、油費..."></div>
     <div class="form-group"><label>帳本</label>
-      <select id="catLedger">
-        <option value="家用">家用帳</option><option value="生意">生意帳</option><option value="個人">個人帳</option>
-      </select>
+      <select id="catLedger"></select>
     </div>
     <button class="btn btn-primary btn-block" onclick="saveCategory()">新增</button>
     <input type="hidden" id="catEditId">
+  </div>
+</div>
+
+<!-- 模態框：新增帳本 -->
+<div class="modal-overlay" id="modalAddLedger">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">新增帳本</div>
+      <button class="modal-close" onclick="closeModal('modalAddLedger')">×</button>
+    </div>
+    <div class="form-group"><label>帳本名稱</label><input type="text" id="newLedgerName" placeholder="例：投資、零用金..."></div>
+    <button class="btn btn-primary btn-block" onclick="saveNewLedger()">新增</button>
   </div>
 </div>
 
@@ -512,9 +507,7 @@ canvas#trendChart{width:100%;display:block;}
     <div class="form-group"><label>按鈕名稱</label><input type="text" id="scName" placeholder="例：早餐、停車費..."></div>
     <div class="form-group"><label>金額（可留空，記帳時再填）</label><input type="number" id="scAmount" inputmode="decimal" placeholder="0"></div>
     <div class="form-group"><label>帳本</label>
-      <select id="scLedger" onchange="populateScCategories()">
-        <option value="家用">家用帳</option><option value="生意">生意帳</option><option value="個人">個人帳</option>
-      </select>
+      <select id="scLedger" onchange="populateScCategories()"></select>
     </div>
     <div class="form-group"><label>分類</label><select id="scCategory"></select></div>
     <div class="form-group"><label>戶頭</label><select id="scAccount"></select></div>
@@ -564,9 +557,7 @@ canvas#trendChart{width:100%;display:block;}
     <div class="form-group"><label>金額</label><input type="number" id="recAmount" inputmode="decimal" placeholder="0"></div>
     <div class="form-group"><label>每月幾號扣款</label><input type="number" id="recDay" inputmode="numeric" placeholder="1~28" min="1" max="28"></div>
     <div class="form-group"><label>帳本</label>
-      <select id="recLedger" onchange="populateRecCategories()">
-        <option value="家用">家用帳</option><option value="生意">生意帳</option><option value="個人">個人帳</option>
-      </select>
+      <select id="recLedger" onchange="populateRecCategories()"></select>
     </div>
     <div class="form-group"><label>分類</label><select id="recCategory"></select></div>
     <div class="form-group"><label>戶頭</label><select id="recAccount"></select></div>
@@ -597,6 +588,20 @@ canvas#trendChart{width:100%;display:block;}
 // ═══════════════════════════════════════════════
 //  資料初始化
 // ═══════════════════════════════════════════════
+const DEFAULT_LEDGERS = ['家用','生意','個人'];
+
+const LEDGER_STYLES = {
+  '家用':{tagClass:'tag-home',emoji:'🏠'},
+  '生意':{tagClass:'tag-biz',emoji:'💼'},
+  '個人':{tagClass:'tag-personal',emoji:'👤'},
+};
+const EXTRA_EMOJIS=['📒','💰','🎯','📊','🌟','🎁','🏦','💳'];
+function getLedgerStyle(name){
+  if(LEDGER_STYLES[name])return LEDGER_STYLES[name];
+  const idx=Math.max(0,(db.ledgers||[]).indexOf(name)-3);
+  return{tagClass:'tag-custom',emoji:EXTRA_EMOJIS[idx%EXTRA_EMOJIS.length]||'📋'};
+}
+
 const DEFAULT_CATEGORIES = [
   // 家用
   {id:'c_f01',name:'餐飲',ledger:'家用',fixed:true},
@@ -651,7 +656,7 @@ function saveLocal(){localStorage.setItem('accountBook_db',JSON.stringify(db));}
 function loadLocal(){
   const raw=localStorage.getItem('accountBook_db');
   if(raw){db=JSON.parse(raw);}
-  else{db={accounts:[...DEFAULT_ACCOUNTS],categories:[...DEFAULT_CATEGORIES],transactions:[],members:[...DEFAULT_MEMBERS],recurring:[]};}
+  else{db={accounts:[...DEFAULT_ACCOUNTS],categories:[...DEFAULT_CATEGORIES],transactions:[],members:[...DEFAULT_MEMBERS],recurring:[],ledgers:[...DEFAULT_LEDGERS]};}
   // 補缺失預設（舊版升級）
   DEFAULT_CATEGORIES.forEach(dc=>{
     if(!db.categories.find(c=>c.id===dc.id))db.categories.push(dc);
@@ -661,6 +666,7 @@ function loadLocal(){
   if(!db.shortcuts)db.shortcuts=[];
   if(!db.budgets)db.budgets={};
   if(!db.projects)db.projects=[];
+  if(!db.ledgers)db.ledgers=[...DEFAULT_LEDGERS];
 }
 
 // ═══════════════════════════════════════════════
@@ -933,7 +939,8 @@ function renderList(){
       const accName=acc?acc.name:'未知戶頭';
       const sign=(t.type==='expense'||t.type==='transfer_out')?'-':'+';
       const cls=(t.type==='expense'||t.type==='transfer_out')?'expense':'income';
-      const ledgerTag=t.ledger==='家用'?'<span class="tag tag-home">家用</span>':t.ledger==='生意'?'<span class="tag tag-biz">生意</span>':'<span class="tag tag-personal">個人</span>';
+      const {tagClass:_ltc}=getLedgerStyle(t.ledger);
+      const ledgerTag=`<span class="tag ${_ltc}">${t.ledger}</span>`;
       const projObj=t.project&&db.projects?db.projects.find(p=>p.id===t.project):null;
       const projTag=projObj?`<span class="tag" style="background:#f3e8ff;color:#7e22ce;">🏗 ${projObj.name}</span>`:'';
       html+=`<div class="tx-item" onclick="openEdit('${t.id}')">
@@ -1104,12 +1111,7 @@ function renderDayReport(){
     </div>
   </div>`;
 
-  // 家用帳
-  html+=buildDaySection('家用',date,txs.filter(t=>t.ledger==='家用'));
-  // 生意帳
-  html+=buildDaySection('生意',date,txs.filter(t=>t.ledger==='生意'));
-  // 個人帳
-  html+=buildDaySection('個人',date,txs.filter(t=>t.ledger==='個人'));
+  db.ledgers.forEach(l=>{html+=buildDaySection(l,date,txs.filter(t=>t.ledger===l));});
 
   if(!txs.length){
     html+=`<div class="empty" style="padding:24px;"><div>今天還沒有記錄</div></div>`;
@@ -1122,8 +1124,7 @@ function buildDaySection(ledger,date,txs){
   if(!txs.length)return'';
   const income=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const expense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
-  const tag=ledger==='家用'?'tag-home':ledger==='生意'?'tag-biz':'tag-personal';
-  const emoji=ledger==='家用'?'🏠':ledger==='生意'?'💼':'👤';
+  const {tagClass:tag,emoji}=getLedgerStyle(ledger);
   let html=`<div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
       <div style="font-weight:700;font-size:.95rem;">${emoji} ${ledger}帳</div>
@@ -1166,7 +1167,7 @@ function buildDaySection(ledger,date,txs){
 // ═══════════════════════════════════════════════
 function switchReportLedger(l,btn){
   currentReportLedger=l;
-  document.querySelectorAll('#page-report .seg-control button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#reportLedgerSegControl button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderReport();
 }
@@ -1174,7 +1175,7 @@ function switchReportLedger(l,btn){
 function renderReport(){
   const month=document.getElementById('reportMonth').value;
   const ledger=currentReportLedger;
-  let txs=db.transactions.filter(t=>t.ledger===ledger&&(!month||t.date.startsWith(month)));
+  let txs=db.transactions.filter(t=>(ledger==='全部'||t.ledger===ledger)&&(!month||t.date.startsWith(month)));
 
   const totalIncome=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
   const totalExpense=txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
@@ -1260,7 +1261,7 @@ function openCatDetail(catId,type){
   const month=document.getElementById('reportMonth').value;
   const ledger=currentReportLedger;
   _catDetailTxs=db.transactions.filter(t=>
-    t.category===catId && t.type===type && t.ledger===ledger &&
+    t.category===catId && t.type===type && (ledger==='全部'||t.ledger===ledger) &&
     (!month||t.date.startsWith(month))
   ).sort((a,b)=>b.date.localeCompare(a.date));
 
@@ -1459,6 +1460,8 @@ function populateRecorders(){
 }
 
 function renderSettings(){
+  renderCatSegControl();
+  populateLedgerSelects();
   renderProjectList();
   renderMemberList();
   renderAccountList();
@@ -1511,7 +1514,7 @@ function renderCategoryList(){
 
 function switchCatTab(t,btn){
   currentCatTab=t;
-  document.querySelectorAll('#page-settings .seg-control button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#catSegControl button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderCategoryList();
 }
@@ -2052,7 +2055,7 @@ function applyShortcut(id){
   // 切換帳本
   currentLedger=s.ledger;
   document.querySelectorAll('#page-add .seg-control button').forEach((b,i)=>{
-    b.classList.toggle('active',(i===0&&s.ledger==='家用')||(i===1&&s.ledger==='生意')||(i===2&&s.ledger==='個人'));
+    b.classList.toggle('active',db.ledgers[i]===s.ledger);
   });
   switchType(s.type);
   populateAddCategories();
@@ -2136,7 +2139,7 @@ function renderBudgetSettingList(){
   if(!db.budgets)db.budgets={};
   const el=document.getElementById('budgetSettingList');
   if(!el)return;
-  const cats=db.categories.filter(c=>c.ledger==='家用'||c.ledger==='生意');
+  const cats=db.categories.filter(c=>db.ledgers.includes(c.ledger));
   el.innerHTML=cats.map(c=>`
     <div class="setting-item">
       <div class="si-label" style="flex:1;">${getCatIcon(c.name)} ${c.name}</div>
@@ -2154,7 +2157,76 @@ function saveBudget(catId,val){
   saveLocal();autoSync();
 }
 
+// ═══════════════════════════════════════════════
+//  帳本動態渲染
+// ═══════════════════════════════════════════════
+function populateLedgerSelects(){
+  const ledgerOpts=db.ledgers.map(l=>`<option value="${l}">${l}帳</option>`).join('');
+  ['editLedger','catLedger','scLedger','recLedger'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const cur=el.value;
+    el.innerHTML=ledgerOpts;
+    if(db.ledgers.includes(cur))el.value=cur;
+  });
+  const fl=document.getElementById('filterLedger');
+  if(fl){
+    const cur=fl.value;
+    fl.innerHTML='<option value="">全部帳本</option>'+ledgerOpts;
+    if(cur)fl.value=cur;
+  }
+}
+
+function renderLedgerSegControl(){
+  const el=document.getElementById('ledgerSegControl');
+  if(!el)return;
+  el.innerHTML=db.ledgers.map(l=>
+    `<button ${l===currentLedger?'class="active"':''} onclick="switchLedger('${l}',this)">${l}帳</button>`
+  ).join('');
+}
+
+function renderReportLedgerSegControl(){
+  const el=document.getElementById('reportLedgerSegControl');
+  if(!el)return;
+  const all=[{v:'全部',label:'全部'},...db.ledgers.map(l=>({v:l,label:l+'帳'}))];
+  el.innerHTML=all.map(b=>
+    `<button ${b.v===currentReportLedger?'class="active"':''} onclick="switchReportLedger('${b.v}',this)">${b.label}</button>`
+  ).join('');
+}
+
+function renderCatSegControl(){
+  const el=document.getElementById('catSegControl');
+  if(!el)return;
+  el.innerHTML=db.ledgers.map(l=>
+    `<button ${l===currentCatTab?'class="active"':''} onclick="switchCatTab('${l}',this)">${l}</button>`
+  ).join('');
+}
+
+function openAddLedger(){
+  document.getElementById('newLedgerName').value='';
+  openModal('modalAddLedger');
+}
+
+function saveNewLedger(){
+  const name=document.getElementById('newLedgerName').value.trim();
+  if(!name){showToast('請輸入帳本名稱','err');return;}
+  if(db.ledgers.includes(name)){showToast('此帳本已存在','err');return;}
+  db.ledgers.push(name);
+  saveLocal();
+  closeModal('modalAddLedger');
+  renderLedgerSegControl();
+  renderReportLedgerSegControl();
+  renderCatSegControl();
+  populateLedgerSelects();
+  showToast('✓ 帳本「'+name+'」新增成功');
+  autoSync();
+}
+
 function renderAll(){
+  renderLedgerSegControl();
+  renderReportLedgerSegControl();
+  renderCatSegControl();
+  populateLedgerSelects();
   populateAddCategories();
   populateAccounts('inAccount');
   populateAccounts('inFromAccount');
@@ -2206,6 +2278,7 @@ async function autoLoadFromGitHub(){
     if(!db.recurring)db.recurring=[];
     if(!db.shortcuts)db.shortcuts=[];
     if(!db.budgets)db.budgets={};
+    if(!db.ledgers)db.ledgers=[...DEFAULT_LEDGERS];
     DEFAULT_CATEGORIES.forEach(dc=>{
       if(!db.categories.find(c=>c.id===dc.id))db.categories.push(dc);
     });

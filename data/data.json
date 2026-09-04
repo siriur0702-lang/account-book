@@ -655,9 +655,9 @@
     {
       "id": "tx_1787198206604_qnp39",
       "date": "2026-08-20",
-      "ledger": "烤布蕾",
+      "ledger": "鵝代收",
       "type": "expense",
-      "category": "c_1788536722706",
+      "category": "",
       "account": "a_1786533459145",
       "amount": 145,
       "note": "鵝的東西",

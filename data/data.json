@@ -259,6 +259,12 @@
       "name": "股票",
       "ledger": "投資",
       "fixed": false
+    },
+    {
+      "id": "c_1788537850228",
+      "name": "期貨",
+      "ledger": "投資",
+      "fixed": false
     }
   ],
   "transactions": [

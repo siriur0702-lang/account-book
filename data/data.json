@@ -319,9 +319,9 @@
     {
       "id": "tx_1788109151141_jo1tr",
       "date": "2026-08-31",
-      "ledger": "家用",
+      "ledger": "烤布蕾",
       "type": "expense",
-      "category": "c_f08",
+      "category": "c_1788536722706",
       "account": "a_1786533459145",
       "amount": 1563,
       "note": "烤布蕾杯子運費",

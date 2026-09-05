@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788572070762_d5bc8",
+      "date": "2026-09-05",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786667097841",
+      "amount": 98,
+      "note": "早餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788535841325_wxt6n",
       "date": "2026-09-04",
       "ledger": "生意",

@@ -305,6 +305,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788569808912_83sqe",
+      "date": "2026-09-04",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 3500,
+      "note": "買冷媒",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788219053246_hde1a",
       "date": "2026-09-01",
       "ledger": "個人",

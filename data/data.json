@@ -317,6 +317,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788569839968_kqxpm",
+      "date": "2026-09-04",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b07",
+      "account": "a_01",
+      "amount": 2500,
+      "note": "冷氣灌冷媒（教練",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788219053246_hde1a",
       "date": "2026-09-01",
       "ledger": "個人",

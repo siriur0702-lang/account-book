@@ -317,6 +317,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788702862399_1ljyt",
+      "date": "2026-09-06",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 5100,
+      "note": "熱水加壓馬達",
+      "recorder": "熊",
+      "project": "prj_1788702601389"
+    },
+    {
       "id": "tx_1788667902796_k2alk",
       "date": "2026-09-05",
       "ledger": "個人",

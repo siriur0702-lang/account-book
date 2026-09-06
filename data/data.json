@@ -305,6 +305,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788701732115_96orc",
+      "date": "2026-09-06",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p05",
+      "account": "a_1786667097841",
+      "amount": 1990,
+      "note": "孕婦課程",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788667902796_k2alk",
       "date": "2026-09-05",
       "ledger": "個人",

@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788667979631_zoujx",
+      "date": "2026-09-06",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b06",
+      "account": "a_01",
+      "amount": 1000,
+      "note": "維修門（高雄波利",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788667902796_k2alk",
       "date": "2026-09-05",
       "ledger": "個人",

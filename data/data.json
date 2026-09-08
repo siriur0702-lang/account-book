@@ -317,6 +317,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788873936898_kw51a",
+      "date": "2026-09-08",
+      "ledger": "鵝代收",
+      "type": "expense",
+      "category": "",
+      "account": "a_1786533459145",
+      "amount": 580,
+      "note": "牛奶×4",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788667920228_nr1ma",
       "date": "2026-09-06",
       "ledger": "個人",

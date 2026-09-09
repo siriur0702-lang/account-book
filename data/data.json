@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1788960800598_jllca",
+      "date": "2026-09-09",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p02",
+      "account": "a_1786533459145",
+      "amount": 1173,
+      "note": "油錢",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1788873908616_jziwn",
       "date": "2026-09-08",
       "ledger": "個人",

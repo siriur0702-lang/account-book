@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1789035561921_2cd2s",
+      "date": "2026-09-10",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b07",
+      "account": "a_1786526188739",
+      "amount": 12000,
+      "note": "",
+      "recorder": "熊",
+      "project": "prj_1788702601389"
+    },
+    {
       "id": "tx_1788220376089_wbsjc",
       "date": "2026-09-09",
       "ledger": "生意",

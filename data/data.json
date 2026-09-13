@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1789262724547_a1vvb",
+      "date": "2026-09-13",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f02",
+      "account": "a_1786667097841",
+      "amount": 800,
+      "note": "小黑過路費",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789187425383_yl6lj",
       "date": "2026-09-12",
       "ledger": "個人",

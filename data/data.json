@@ -281,6 +281,18 @@
       "project": ""
     },
     {
+      "id": "tx_1789443988474_an7w6",
+      "date": "2026-09-15",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p02",
+      "account": "a_1786667097841",
+      "amount": 1196,
+      "note": "加油",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789262724547_a1vvb",
       "date": "2026-09-13",
       "ledger": "家用",

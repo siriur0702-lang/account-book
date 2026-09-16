@@ -293,6 +293,18 @@
       "project": "prj_1789549257521"
     },
     {
+      "id": "tx_1789554172596_vdkpy",
+      "date": "2026-09-16",
+      "ledger": "鵝代收",
+      "type": "expense",
+      "category": "",
+      "account": "a_1786533459145",
+      "amount": 807,
+      "note": "牛奶×6",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789442182398_vu2p6",
       "date": "2026-09-15",
       "ledger": "家用",

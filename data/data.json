@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1789713105260_a02uo",
+      "date": "2026-09-18",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 250,
+      "note": "鑽偉",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1789625724048_zq1vf",
       "date": "2026-09-17",
       "ledger": "生意",

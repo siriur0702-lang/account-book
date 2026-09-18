@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1789739561250_cf8pc",
+      "date": "2026-09-18",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 5800,
+      "note": "電動工具 電池",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1789625724048_zq1vf",
       "date": "2026-09-17",
       "ledger": "生意",

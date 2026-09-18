@@ -329,6 +329,18 @@
       "project": "prj_1789742651384"
     },
     {
+      "id": "tx_1789742729320_kh352",
+      "date": "2026-09-18",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 5800,
+      "note": "電動工具",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1789625724048_zq1vf",
       "date": "2026-09-17",
       "ledger": "生意",

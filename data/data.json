@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1789870080168_3qzpk",
+      "date": "2026-09-20",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786667097841",
+      "amount": 139,
+      "note": "早餐",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789713105260_a02uo",
       "date": "2026-09-18",
       "ledger": "生意",

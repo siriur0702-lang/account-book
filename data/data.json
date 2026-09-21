@@ -293,6 +293,18 @@
       "project": "prj_1789549257521"
     },
     {
+      "id": "tx_1789992856684_b0lkr",
+      "date": "2026-09-20",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 1500,
+      "note": "電線二卷",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1789713105260_a02uo",
       "date": "2026-09-18",
       "ledger": "生意",

@@ -281,6 +281,18 @@
       "project": "prj_1789549257521"
     },
     {
+      "id": "tx_1789993726764_vmkqj",
+      "date": "2026-09-21",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 600,
+      "note": "點焊機運費",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789870080168_3qzpk",
       "date": "2026-09-20",
       "ledger": "個人",

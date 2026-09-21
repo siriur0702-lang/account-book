@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1789995644943_6h1pc",
+      "date": "2026-09-21",
+      "ledger": "鵝代收",
+      "type": "expense",
+      "category": "",
+      "account": "a_1786533459145",
+      "amount": 1100,
+      "note": "木湯匙",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1789870080168_3qzpk",
       "date": "2026-09-20",
       "ledger": "個人",

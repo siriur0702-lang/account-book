@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1790040526996_0i9k7",
+      "date": "2026-09-22",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 4770,
+      "note": "軌道燈",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1789993113205_e4khl",
       "date": "2026-09-21",
       "ledger": "生意",

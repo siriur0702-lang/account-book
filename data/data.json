@@ -305,18 +305,6 @@
       "project": ""
     },
     {
-      "id": "tx_1789995653939_jr57d",
-      "date": "2026-09-21",
-      "ledger": "鵝代收",
-      "type": "expense",
-      "category": "",
-      "account": "a_1786533459145",
-      "amount": 650,
-      "note": "三個箱子",
-      "recorder": "熊",
-      "project": ""
-    },
-    {
       "id": "tx_1789870080168_3qzpk",
       "date": "2026-09-20",
       "ledger": "個人",
@@ -1734,6 +1722,10 @@
     {
       "id": "prj_1789742651384",
       "name": "Coco"
+    },
+    {
+      "id": "prj_1790040510970",
+      "name": "高雄想不同"
     }
   ],
   "ledgers": [

@@ -293,6 +293,18 @@
       "project": "prj_1790040510970"
     },
     {
+      "id": "tx_1790044590786_ceuz0",
+      "date": "2026-09-22",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 5880,
+      "note": "軌道",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1789993113205_e4khl",
       "date": "2026-09-21",
       "ledger": "生意",

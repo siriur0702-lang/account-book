@@ -281,6 +281,18 @@
       "project": "prj_1790040510970"
     },
     {
+      "id": "tx_1790144052474_hrjzz",
+      "date": "2026-09-23",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 1600,
+      "note": "牙條 五金",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1790040526996_0i9k7",
       "date": "2026-09-22",
       "ledger": "生意",

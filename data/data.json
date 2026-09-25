@@ -281,6 +281,18 @@
       "project": "prj_1789549257521"
     },
     {
+      "id": "tx_1790360275383_5wmhr",
+      "date": "2026-09-25",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b08",
+      "account": "a_01",
+      "amount": 50000,
+      "note": "訂金",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1790273352002_rfjd2",
       "date": "2026-09-24",
       "ledger": "生意",

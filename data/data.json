@@ -281,6 +281,18 @@
       "project": "prj_1790040510970"
     },
     {
+      "id": "tx_1790747880336_kowe2",
+      "date": "2026-09-29",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_01",
+      "amount": 450,
+      "note": "水管材料",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1790487982100_b6s69",
       "date": "2026-09-27",
       "ledger": "個人",

@@ -281,6 +281,18 @@
       "project": ""
     },
     {
+      "id": "tx_1790781099474_uxjv7",
+      "date": "2026-09-30",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_1786533459145",
+      "amount": 650,
+      "note": "花生醬開心果醬",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1790662693834_l67zy",
       "date": "2026-09-29",
       "ledger": "生意",

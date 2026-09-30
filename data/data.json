@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1790774071824_cvf3d",
+      "date": "2026-09-30",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f08",
+      "account": "a_1786533459145",
+      "amount": 800,
+      "note": "收納工具",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1790662693834_l67zy",
       "date": "2026-09-29",
       "ledger": "生意",

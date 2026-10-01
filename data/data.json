@@ -279,6 +279,18 @@
       "note": "[定期] 車貸"
     },
     {
+      "id": "tx_1790868476953_y152e",
+      "date": "2026-10-01",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 450,
+      "note": "鑽頭",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1790774071824_cvf3d",
       "date": "2026-09-30",
       "ledger": "家用",

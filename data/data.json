@@ -315,6 +315,18 @@
       "project": "prj_1790040510970"
     },
     {
+      "id": "tx_1790868457927_35cey",
+      "date": "2026-09-30",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 240,
+      "note": "Cd管",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1790662693834_l67zy",
       "date": "2026-09-29",
       "ledger": "生意",

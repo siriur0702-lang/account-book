@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1790836965763_edpqj",
+      "date": "2026-09-30",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b05",
+      "account": "a_1786667097841",
+      "amount": 1220,
+      "note": "加油",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1790662693834_l67zy",
       "date": "2026-09-29",
       "ledger": "生意",

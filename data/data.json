@@ -269,6 +269,16 @@
   ],
   "transactions": [
     {
+      "id": "tx_1790868427149_gzjd1",
+      "date": "2026-10-09",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b05",
+      "account": "a_1786526188739",
+      "amount": 11776,
+      "note": "[定期] 車貸"
+    },
+    {
       "id": "tx_1790774071824_cvf3d",
       "date": "2026-09-30",
       "ledger": "家用",

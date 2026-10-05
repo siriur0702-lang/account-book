@@ -291,6 +291,18 @@
       "project": "prj_1786799109661"
     },
     {
+      "id": "tx_1791166424578_yf9j7",
+      "date": "2026-10-05",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 510,
+      "note": "",
+      "recorder": "熊",
+      "project": "prj_1786799109661"
+    },
+    {
       "id": "tx_1790868476953_y152e",
       "date": "2026-10-01",
       "ledger": "生意",

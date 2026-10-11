@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1791696755989_uv0uy",
+      "date": "2026-10-11",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p01",
+      "account": "a_01",
+      "amount": 880,
+      "note": "食材",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1790868427149_gzjd1",
       "date": "2026-10-09",
       "ledger": "生意",

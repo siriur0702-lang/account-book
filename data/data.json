@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1791808319611_rkfk5",
+      "date": "2026-10-11",
+      "ledger": "個人",
+      "type": "income",
+      "category": "c_p07",
+      "account": "a_01",
+      "amount": 1000,
+      "note": "推拿",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1790868427149_gzjd1",
       "date": "2026-10-09",
       "ledger": "生意",

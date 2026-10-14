@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1791964254543_6iyik",
+      "date": "2026-10-12",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_01",
+      "amount": 2815,
+      "note": "花現 cd管1",
+      "recorder": "熊",
+      "project": "prj_1789549257521"
+    },
+    {
       "id": "tx_1791696755989_uv0uy",
       "date": "2026-10-11",
       "ledger": "個人",

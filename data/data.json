@@ -281,6 +281,18 @@
       "project": ""
     },
     {
+      "id": "tx_1792231854189_rl8ok",
+      "date": "2026-10-15",
+      "ledger": "生意",
+      "type": "income",
+      "category": "c_b07",
+      "account": "a_1786526188739",
+      "amount": 100000,
+      "note": "",
+      "recorder": "熊",
+      "project": "prj_1790040510970"
+    },
+    {
       "id": "tx_1792065557921_s61og",
       "date": "2026-10-14",
       "ledger": "生意",

@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1792338063940_dzmpc",
+      "date": "2026-10-18",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b01",
+      "account": "a_1786533459145",
+      "amount": 3000,
+      "note": "三顆小便斗",
+      "recorder": "熊",
+      "project": "prj_1786799109661"
+    },
+    {
       "id": "tx_1792325714993_algtm",
       "date": "2026-10-17",
       "ledger": "個人",

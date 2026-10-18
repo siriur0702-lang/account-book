@@ -281,6 +281,18 @@
       "project": "prj_1786799109661"
     },
     {
+      "id": "tx_1792341142372_1wuhr",
+      "date": "2026-10-18",
+      "ledger": "個人",
+      "type": "expense",
+      "category": "c_p04",
+      "account": "a_1786533459145",
+      "amount": 1700,
+      "note": "釣具",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1792325714993_algtm",
       "date": "2026-10-17",
       "ledger": "個人",

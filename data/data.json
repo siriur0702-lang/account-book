@@ -269,6 +269,18 @@
   ],
   "transactions": [
     {
+      "id": "tx_1793016348181_c1c6u",
+      "date": "2026-10-26",
+      "ledger": "生意",
+      "type": "expense",
+      "category": "c_b05",
+      "account": "a_01",
+      "amount": 4100,
+      "note": "小便斗運費",
+      "recorder": "熊",
+      "project": "prj_1786799109661"
+    },
+    {
       "id": "tx_1792338063940_dzmpc",
       "date": "2026-10-18",
       "ledger": "生意",

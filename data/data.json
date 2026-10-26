@@ -293,6 +293,18 @@
       "project": ""
     },
     {
+      "id": "tx_1793001274188_uptmn",
+      "date": "2026-10-18",
+      "ledger": "家用",
+      "type": "expense",
+      "category": "c_f02",
+      "account": "a_01",
+      "amount": 2200,
+      "note": "北上油錢",
+      "recorder": "熊",
+      "project": ""
+    },
+    {
       "id": "tx_1792325714993_algtm",
       "date": "2026-10-17",
       "ledger": "個人",

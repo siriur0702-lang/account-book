@@ -90,7 +90,7 @@ const LEDGER_KW=[
   ['烤布蕾',/烤布蕾|布蕾/],
   ['鵝代收',/代收|幫鵝|鵝的/],
   ['投資',/股票|ETF|基金|投資/i],
-  ['生意',/生意|公司|進貨|案場|工地|客人|業主|師傅|工資|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|吸頂燈|軌道燈|燈具|燈泡|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|冷氣|熱水器|抽油煙機|馬達|鑽頭|電鑽|工具|點焊|配電|斷路器|無熔絲|電錶|五金|壓條|牙條|材料行|水電|裝修|查修|維修|修理/],
+  ['生意',/生意|公司|進貨|工人|助手|小工|水泥|砂|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|案場|工地|客人|業主|師傅|工資|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|吸頂燈|軌道燈|燈具|燈泡|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|冷氣|熱水器|抽油煙機|馬達|鑽頭|電鑽|工具|點焊|配電|斷路器|無熔絲|電錶|五金|壓條|牙條|材料行|水電|裝修|查修|維修|修理/],
   ['家用',/家用|家裡|全家人|爸|媽|小黑|房租|房貸|水費|電費|瓦斯|網路費|電話費|保險|家具|收納|衛生紙|洗衣|洗碗|垃圾袋|除螞蟻|燃料稅|牌照稅/],
 ];
 // 分類名稱 → 關鍵字（對應到該帳本裡同名的分類）
@@ -101,11 +101,12 @@ const CAT_KW=[
   ['其他收入',/./,'income'],
   ['軟體訂閱',/訂閱|claude|chatgpt|openai|netflix|spotify|youtube|midjourney|tradingview|icloud|google/i],
   ['繳卡費',/卡費/],
-  ['進貨',/進貨|材料|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|燈|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|熱水器|馬達|鑽頭|工具|五金|壓條|牙條|配電|斷路器/],
+  ['進貨',/進貨|材料|水泥|砂|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|燈|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|熱水器|馬達|鑽頭|工具|五金|壓條|牙條|配電|斷路器/],
   ['運費',/運費|加油|油錢|^油$|過路費|停車/],
   ['薪資',/工資|師傅|工人|助手/],
   ['租金',/租金|房租/],
   ['廣告行銷',/廣告|行銷|名片|招牌/],
+  ['日常用品',/(全聯|好市多|家樂福|大潤發|超市|大賣場).*(買東西|日用品|用品)|寶雅|家樂福|大潤發|大賣場|日用品/],
   ['餐飲',/早餐|午餐|晚餐|宵夜|消夜|早午餐|便當|飯|麵|粥|雞排|鹹酥雞|滷味|火鍋|燒烤|燒肉|拉麵|壽司|小吃|夜市|點心|零食|餅乾|蛋糕|麵包|飲料|咖啡|奶茶|紅茶|綠茶|茶|果汁|汽水|可樂|氣泡水|礦泉水|水$|冰|豆花|仙草|湯|水果|菜|肉|雞|魚|蛋|牛奶|鮮奶|食材|吃|喝|麥當勞|肯德基|摩斯|漢堡|披薩|超商|7-11|小7|全家|萊爾富|全聯|好市多|請.*吃/],
   ['交通',/加油|油錢|^油$|停車|過路費|ETC|高鐵|台鐵|火車|捷運|公車|客運|計程車|小黃|uber|修車|輪胎|機油|保養車|車子|汽車|機車|燃料稅|牌照稅|洗車/i],
   ['水電/瓦斯',/水費|電費|瓦斯/],
@@ -242,7 +243,8 @@ function parseVoice(text,ctx){
     else if(/一半|平分|AA|分攤|對分/i.test(seg)){split=2;seg=seg.replace(/我?付?一半|平分|AA|分攤|對分/ig,' ');}
     if(amount!=null&&split>1)amount=Math.round(amount/split);
     // 收入/支出
-    const type=INCOME_RE.test(raw)||INCOME_RE.test(seg)?'income':'expense';
+    const payOut=/工人|師傅|助手|小工|付|發薪|給.{0,4}(薪|工錢)/.test(seg);
+    const type=!payOut&&(INCOME_RE.test(raw)||INCOME_RE.test(seg))?'income':'expense';
     const kwText=seg; // 拿掉金額、日期後的原句，給關鍵字判斷用
     const cardBill=/卡費/.test(seg);
     // 戶頭
@@ -254,7 +256,10 @@ function parseVoice(text,ctx){
     // 備註（物品名稱）
     let note=(cardBill?seg:seg.replace(ACC_STRIP,' ')).replace(new RegExp(INCOME_RE.source,'g'),' ').replace(FILLER,' ').replace(/\s+/g,' ').trim();
     if(split>1)note=(note+' （'+split+'人分）').trim();
-    const item=note.replace(/\s+/g,'');
+    let item=note.replace(/\s+/g,'');
+    // 投票時拿掉案場名稱，免得「梅山口」把分類拉走
+    if(project){const pn=((db.projects||[]).find(p=>p.id===project)||{}).name||'';const n=pn.replace(/\s+/g,'');
+      for(let L=n.length;L>=2;L--)for(let i=0;i+L<=n.length;i++){const sub=n.slice(i,i+L);if(item.includes(sub))item=item.split(sub).join('');}}
     // 帳本：明講的 → 案場 → 以前的紀錄 → 內建關鍵字 → 目前選的帳本
     let ledger=null;
     if(/生意|公司/.test(seg))ledger='生意';
@@ -293,7 +298,9 @@ function parseVoice(text,ctx){
         if(c){category=c.id;break;}
       }
     }
+    let guess=false;
     if(!category){
+      guess=true;
       const prefer=type==='income'?['其他收入','銷售收入']:['雜費','餐飲','其他'];
       const c=prefer.map(n=>cats.find(c=>c.name===n)).find(Boolean)||cats[0];
       category=c?c.id:'';
@@ -303,7 +310,7 @@ function parseVoice(text,ctx){
     let acc=accName?accs.find(a=>a.name.includes(accName)):null;
     if(!acc)acc=accs.find(a=>a.name==='現金')||accs[0];
     if(amount==null&&!item)continue;
-    items.push({date:carryDate,ledger,type,category,account:acc?acc.id:'',amount,note,project:ledger==='生意'?project:'',raw});
+    items.push({date:carryDate,ledger,type,category,account:acc?acc.id:'',amount,note,project:ledger==='生意'?project:'',raw,guess});
   }
   return items;
 }
@@ -321,9 +328,24 @@ if(typeof window!=='undefined'&&typeof document!=='undefined'){
   function accName(id){const a=db.accounts.find(a=>a.id===id);return a?a.name:'';}
   function projName(id){const p=(db.projects||[]).find(p=>p.id===id);return p?p.name:'';}
 
-  window.voiceReparse=function(){
+  let voiceOverride={}; // 使用者手動選的分類：key = 第幾筆|原句
+  function catOptions(it){
+    return (db.ledgers||[]).map(l=>{
+      const cs=db.categories.filter(c=>c.ledger===l);if(!cs.length)return '';
+      return `<optgroup label="${esc(l)}帳">`+cs.map(c=>`<option value="${esc(l+'|'+c.id)}" ${l===it.ledger&&c.id===it.category?'selected':''}>${esc(l)}／${esc(c.name)}</option>`).join('')+'</optgroup>';
+    }).join('');
+  }
+  window.voiceSetCat=function(i,v){
+    const it=voiceItems[i];if(!it)return;
+    const k=v.indexOf('|');it.ledger=v.slice(0,k);it.category=v.slice(k+1);it.guess=false;
+    if(it.ledger!=='生意')it.project='';
+    voiceOverride[i+'|'+it.raw]={ledger:it.ledger,category:it.category};
+    voiceReparse(true);
+  };
+  window.voiceReparse=function(keep){
     const text=document.getElementById('voiceText').value;
     voiceItems=VoiceParse.parseVoice(text,{db,defaultLedger:currentLedger});
+    voiceItems.forEach((it,i)=>{const o=voiceOverride[i+'|'+it.raw];if(o){it.ledger=o.ledger;it.category=o.category;it.guess=false;if(o.ledger!=='生意')it.project='';}});
     const box=document.getElementById('voiceItems');
     if(!voiceItems.length){box.innerHTML='<div class="hint" style="padding:8px 0;">還沒聽到可以記的內容。可以說「雞排 80」，或直接在上面打字修改。</div>';}
     else box.innerHTML=voiceItems.map((it,i)=>{
@@ -333,7 +355,9 @@ if(typeof window!=='undefined'&&typeof document!=='undefined'){
         <input type="checkbox" id="vchk${i}" ${bad?'disabled':'checked'} style="margin-top:4px;width:18px;height:18px;">
         <div style="flex:1;min-width:0;">
           <div style="font-weight:600;">${esc(it.note||'（沒有品名）')}</div>
-          <div class="hint">${esc(it.date)}・${esc(it.ledger)}帳／${esc(catName(it.category))}・${esc(accName(it.account))}${it.project?'・'+esc(projName(it.project)):''}</div>
+          <div class="hint">${esc(it.date)}・${esc(accName(it.account))}${it.project?'・'+esc(projName(it.project)):''}</div>
+          <select onclick="event.preventDefault();event.stopPropagation()" onchange="voiceSetCat(${i},this.value)" style="margin-top:4px;width:100%;padding:4px;font-size:.85rem;${it.guess?'border:2px solid #f59e0b;':''}">${catOptions(it)}</select>
+          ${it.guess?'<div class="hint" style="color:#b45309;">⚠ 分類沒把握，請點上面選一下</div>':''}
         </div>
         <div class="tx-amount ${it.type==='income'?'income':'expense'}" style="font-size:1rem;white-space:nowrap;">${bad?'<span style="color:var(--danger)">沒聽到金額</span>':sign+fmtMoney(it.amount)}</div>
       </label>`;
@@ -342,29 +366,62 @@ if(typeof window!=='undefined'&&typeof document!=='undefined'){
     document.getElementById('voiceSaveBtn').textContent=voiceItems.length>1?'全部儲存':'儲存';
   };
 
-  window.voiceStart=function(){
-    openModal('modalVoice');
-    document.getElementById('voiceText').value='';
-    voiceReparse();
+  // 一直聽，直到按「講完了」；中間停下來喘氣不會結束（瀏覽器自己停掉就自動再開）
+  let voiceOn=false,voiceBase='',voiceIdle=null;
+  function voiceUI(on){
+    const b=document.getElementById('voiceMicBtn'),s=document.getElementById('voiceSaveBtn'),f=document.getElementById('voiceFillBtn');
+    if(b){b.textContent=on?'⏹ 講完了':'🎤 繼續講';b.className='btn '+(on?'btn-danger':'btn-gray');}
+    if(s)s.disabled=on;if(f&&on)f.style.display='none';
+  }
+  function voiceKick(){clearTimeout(voiceIdle);voiceIdle=setTimeout(()=>window.voiceStop(),60000);} // 一分鐘都沒聲音才自己停
+  window.voiceStop=function(){
+    voiceOn=false;clearTimeout(voiceIdle);
+    try{if(voiceRec)voiceRec.stop();}catch(e){}
+    const st=document.getElementById('voiceStatus');if(st)st.textContent='聽完了。不對的地方可以直接改上面的文字，再按「儲存」';
+    voiceUI(false);voiceReparse();
+  };
+  window.voiceMic=function(){if(voiceOn)voiceStop();else voiceListen(false);};
+  function voiceListen(fresh){
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
     const st=document.getElementById('voiceStatus');
     if(!SR){st.textContent='這個瀏覽器不支援語音，請直接在下面打字（也可以用鍵盤上的麥克風）';document.getElementById('voiceText').focus();return;}
-    try{if(voiceRec)voiceRec.abort();}catch(e){}
-    voiceRec=new SR();
-    voiceRec.lang='zh-TW';voiceRec.interimResults=true;voiceRec.continuous=false;
-    let finalText='';
-    voiceRec.onstart=()=>{st.textContent='🎤 請說…（例如：早餐 50、午餐 120，昨天加油 500 刷卡）';};
-    voiceRec.onresult=e=>{
-      let interim='';
-      for(let i=e.resultIndex;i<e.results.length;i++){
-        if(e.results[i].isFinal)finalText+=e.results[i][0].transcript;else interim+=e.results[i][0].transcript;
-      }
-      document.getElementById('voiceText').value=(finalText+interim).trim();
-      voiceReparse();
+    try{if(voiceRec){voiceRec.onend=null;voiceRec.abort();}}catch(e){}
+    const ta=document.getElementById('voiceText');
+    if(fresh)ta.value='';
+    voiceOn=true;voiceUI(true);voiceKick();
+    st.textContent='🎤 慢慢講，可以停下來想，講完按「⏹ 講完了」';
+    const run=()=>{
+      voiceBase=ta.value.trim();
+      const r=new SR();voiceRec=r;
+      r.lang='zh-TW';r.interimResults=true;r.continuous=true;
+      r.onresult=e=>{
+        voiceKick();
+        let fin='',interim='';
+        for(let i=0;i<e.results.length;i++){
+          const t=e.results[i][0].transcript.trim();
+          if(e.results[i].isFinal){
+            // 有些手機每一段會把前面講過的再給一次，避免重複
+            if(fin&&t.startsWith(fin))fin=t;else if(!fin.endsWith(t))fin=(fin?fin+' ':'')+t;
+          }else interim+=t;
+        }
+        if(interim&&fin&&interim.startsWith(fin))interim=interim.slice(fin.length).trim();
+        ta.value=[voiceBase,fin,interim].filter(Boolean).join(' ');
+        voiceReparse();
+      };
+      r.onerror=e=>{
+        if(e.error==='not-allowed'||e.error==='service-not-allowed'){voiceOn=false;voiceUI(false);st.textContent='沒有麥克風權限，請在瀏覽器設定允許，或直接打字';}
+      };
+      r.onend=()=>{if(voiceOn&&voiceRec===r)setTimeout(()=>{if(voiceOn)run();},150);else voiceReparse();};
+      try{r.start();}catch(e){voiceOn=false;voiceUI(false);st.textContent='無法開始錄音，請直接打字';}
     };
-    voiceRec.onerror=e=>{st.textContent=e.error==='not-allowed'?'沒有麥克風權限，請在瀏覽器設定允許，或直接打字':'沒聽清楚，再按一次「重新說」，或直接打字';};
-    voiceRec.onend=()=>{if(st.textContent.startsWith('🎤'))st.textContent='聽完了。不對的地方可以直接改上面的文字';voiceReparse();};
-    try{voiceRec.start();}catch(e){st.textContent='無法開始錄音，請直接打字';}
+    run();
+  }
+  window.voiceStart=function(){
+    openModal('modalVoice');
+    document.getElementById('voiceText').value='';
+    voiceOverride={};
+    voiceReparse();
+    voiceListen(true);
   };
 
   window.voiceFillForm=function(){
@@ -383,6 +440,7 @@ if(typeof window!=='undefined'&&typeof document!=='undefined'){
   };
 
   window.voiceSaveAll=function(){
+    if(voiceOn)voiceStop();
     const recorder=document.getElementById('inRecorder').value;
     let n=0;
     voiceItems.forEach((it,i)=>{

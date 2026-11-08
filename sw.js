@@ -1,5 +1,5 @@
 // 記帳本背景程式：讓手機可以安裝；畫面一律先拿最新版，沒網路才用存起來的
-const CACHE='ab-v1';
+const CACHE='ab-v2';
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./manifest.json','./icons/icon-192.png'])));});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{

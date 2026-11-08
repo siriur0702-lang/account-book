@@ -202,6 +202,8 @@ canvas#trendChart{width:100%;display:block;}
   <div class="shortcuts-row" id="shortcutsRow"></div>
 
   <div class="card" style="padding:16px;">
+    <!-- 語音記帳 -->
+    <button class="btn btn-block" style="background:#eef2ff;color:var(--primary);border:2px dashed #c7d2fe;margin-bottom:12px;font-size:1rem;" onclick="voiceStart()">🎤 用講的記帳</button>
     <!-- 收支切換 -->
     <div class="type-toggle">
       <button class="expense active" id="btnExpense" onclick="switchType('expense')">支出</button>
@@ -591,6 +593,24 @@ canvas#trendChart{width:100%;display:block;}
 </div>
 
 <!-- 模態框：定期提醒 -->
+<div class="modal-overlay" id="modalVoice">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🎤 用講的記帳</div>
+      <button class="modal-close" onclick="closeModal('modalVoice')">×</button>
+    </div>
+    <div id="voiceStatus" class="hint" style="margin-bottom:8px;font-size:.85rem;"></div>
+    <div class="form-group"><textarea id="voiceText" rows="2" placeholder="說的話會出現在這裡，也可以直接打字修改" oninput="voiceReparse()"></textarea></div>
+    <div id="voiceItems"></div>
+    <div class="hint" style="margin:6px 0 10px;">帳本、分類不對的話，儲存後到「明細」點那筆修改；只有一筆時可以按「填到表單」先改再存。</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn btn-primary" style="flex:1;" id="voiceSaveBtn" onclick="voiceSaveAll()">儲存</button>
+      <button class="btn btn-gray" id="voiceFillBtn" onclick="voiceFillForm()">填到表單</button>
+      <button class="btn btn-gray" onclick="voiceStart()">重新說</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modalRecurringPrompt">
   <div class="modal">
     <div class="modal-header">
@@ -2389,6 +2409,9 @@ function renderAll(){
   startCloud().finally(()=>setTimeout(checkRecurring,400));
 })();
 
+</script>
+<script src="voice.js"></script>
+<script>
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 </body>

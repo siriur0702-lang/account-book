@@ -90,7 +90,7 @@ const LEDGER_KW=[
   ['烤布蕾',/烤布蕾|布蕾/],
   ['鵝代收',/代收|幫鵝|鵝的/],
   ['投資',/股票|ETF|基金|投資/i],
-  ['生意',/生意|公司|進貨|工人|助手|小工|水泥|砂|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|案場|工地|客人|業主|師傅|工資|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|吸頂燈|軌道燈|燈具|燈泡|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|冷氣|熱水器|抽油煙機|馬達|鑽頭|電鑽|工具|點焊|配電|斷路器|無熔絲|電錶|五金|壓條|牙條|材料行|水電|裝修|查修|維修|修理/],
+  ['生意',/生意|公司|進貨|工人|助手|小工|水泥|砂石|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|案場|工地|客人|業主|師傅|工資|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|吸頂燈|軌道燈|燈具|燈泡|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|冷氣|熱水器|抽油煙機|馬達|鑽頭|電鑽|工具|點焊|配電|斷路器|無熔絲|電錶|五金|壓條|牙條|材料行|水電|裝修|查修|維修|修理/],
   ['家用',/家用|家裡|全家人|爸|媽|小黑|房租|房貸|水費|電費|瓦斯|網路費|電話費|保險|家具|收納|衛生紙|洗衣|洗碗|垃圾袋|除螞蟻|燃料稅|牌照稅/],
 ];
 // 分類名稱 → 關鍵字（對應到該帳本裡同名的分類）
@@ -101,7 +101,7 @@ const CAT_KW=[
   ['其他收入',/./,'income'],
   ['軟體訂閱',/訂閱|claude|chatgpt|openai|netflix|spotify|youtube|midjourney|tradingview|icloud|google/i],
   ['繳卡費',/卡費/],
-  ['進貨',/進貨|材料|水泥|砂|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|燈|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|熱水器|馬達|鑽頭|工具|五金|壓條|牙條|配電|斷路器/],
+  ['進貨',/進貨|材料|水泥|砂石|磁磚|矽利康|膠帶|螺絲|釘|油漆|木板|夾板|石膏板|角材|鐵管|PVC|接頭|彎頭|電箱|網路線|插頭|延長線|束帶|保溫|銅管|白鐵|電線|線材|花線|[Cc][Dd]管|管件|管材|開關|插座|燈|小便斗|馬桶|水管|面盆|洗臉盆|洗手槽|冷媒|熱水器|馬達|五金|壓條|牙條|配電|斷路器/],
   ['運費',/運費|加油|油錢|^油$|過路費|停車/],
   ['薪資',/工資|師傅|工人|助手/],
   ['租金',/租金|房租/],
@@ -149,6 +149,54 @@ function buildHistory(db){
   }
   return idx;
 }
+// 常見物品字典（台灣一般人常買的東西）：分類名稱 → 詞。比對時「對到的詞越長越準」
+const DICT={
+'日常用品':'牙線 牙線棒 牙膏 牙刷 漱口水 衛生紙 廚房紙巾 擦手紙 濕紙巾 面紙 棉花棒 化妝棉 洗衣精 洗衣粉 洗衣球 洗衣膠囊 柔軟精 漂白水 洗碗精 菜瓜布 海綿 抹布 拖把 掃把 畚箕 垃圾袋 保鮮膜 保鮮盒 鋁箔紙 夾鏈袋 塑膠袋 洗髮精 洗髮乳 潤髮乳 沐浴乳 沐浴露 肥皂 香皂 洗手乳 洗面乳 刮鬍刀 刮鬍泡 衛生棉 護墊 棉條 除濕盒 除濕劑 芳香劑 除臭劑 除臭噴霧 殺蟲劑 蚊香 捕蚊燈 電蚊拍 防蚊液 螞蟻藥 蟑螂藥 除螞蟻 衣架 曬衣夾 收納箱 收納盒 收納袋 置物架 水桶 臉盆 浴巾 毛巾 拖鞋 雨傘 雨衣 打火機 指甲剪 梳子 杯子 碗盤 盤子 筷子 湯匙 叉子 鍋子 平底鍋 菜刀 砧板 免洗餐具 紙杯 紙盤 貓砂 狗飼料 貓飼料 飼料 寵物 貓罐 狗罐 尿墊 雞毛撢子 清潔劑 浴廁清潔 馬桶刷 通樂 小蘇打 檸檬酸 寶雅 大創 日用品 生活用品 濾水壺 濾心 電蚊香',
+'育兒':'尿布 紙尿褲 奶粉 奶瓶 奶嘴 嬰兒 寶寶 新生兒 嬰兒車 推車 安全座椅 汽座 嬰兒床 包巾 口水巾 紗布巾 副食品 米精 吸乳器 集乳袋 溢乳墊 孕婦 產檢 月子 月子中心 月嫂 保母 保姆 托嬰 幼兒園 托兒所 玩具 童裝 童鞋 兒童 小孩 屁屁膏 溫奶器 消毒鍋 背巾 揹巾 學步 彌月',
+'人情/孝親':'紅包 白包 禮金 喜酒 喜帖 奠儀 包紅包 孝親 孝親費 給媽 給爸 給爸媽 請爸 請媽 送禮 禮物 禮盒 伴手禮 生日禮物 彌月蛋糕 拜拜 香油錢 金紙 祭拜 供品 隨禮',
+'醫療':'口罩 OK繃 ok繃 繃帶 優碘 酒精 體溫計 耳溫槍 額溫槍 血壓計 退燒 感冒藥 止痛藥 胃藥 眼藥水 藥膏 痠痛貼布 貼布 撒隆巴斯 維他命 維生素 葉酸 魚油 益生菌 保健食品 鈣片 葉黃素 洗牙 看診 復健 中醫 西醫 掛號費 健保費 藥局 藥房 健康檢查 疫苗 打針 眼科 皮膚科 小兒科 婦產科 牙科 拔牙 補牙 喉糖',
+'餐飲':'便當 自助餐 炒飯 炒麵 水餃 鍋貼 煎餃 蔥油餅 蛋餅 飯糰 三明治 吐司 漢堡 薯條 炸雞 雞塊 滷肉飯 肉燥飯 雞肉飯 排骨飯 雞腿飯 牛肉麵 陽春麵 乾麵 米粉 粄條 冬粉 河粉 鍋燒 意麵 義大利麵 披薩 壽司 生魚片 丼飯 咖哩 燒臘 熱炒 合菜 鐵板燒 牛排 豆漿 米漿 珍奶 珍珠奶茶 手搖 星巴克 路易莎 85度C 50嵐 清心 可不可 迷客夏 冰沙 冰淇淋 霜淇淋 雪糕 冰棒 布丁 甜點 甜甜圈 鬆餅 紅豆餅 車輪餅 雞蛋糕 烤地瓜 玉米 臭豆腐 肉圓 碗粿 蚵仔煎 麵線 粽子 月餅 湯圓 年菜 蘋果 香蕉 芭樂 西瓜 葡萄 橘子 柳丁 草莓 芒果 鳳梨 木瓜 奇異果 番茄 青菜 高麗菜 白菜 菠菜 地瓜葉 空心菜 洋蔥 大蒜 香菇 杏鮑菇 金針菇 豆腐 豆干 雞蛋 豬肉 牛肉 雞肉 雞腿 蛤蜊 白米 麵條 沙拉油 橄欖油 食用油 醬油 調味料 味醂 米酒 啤酒 高粱 紅酒 茶葉 優格 優酪乳 起司 麥片 燕麥 泡麵 罐頭 洋芋片 巧克力 糖果 堅果 花生 口香糖 果醬 花生醬 礦泉水 椰子水 運動飲料 外送 foodpanda ubereats 熊貓 小北百貨',
+'交通':'汽油 柴油 停車費 eTag 悠遊卡 一卡通 火車票 換機油 補胎 雨刷 電瓶 驗車 罰單 汽車美容 安全帽 行車紀錄器 機票 租車',
+'車貸/車輛':'車貸 貨車 發財車',
+'工具設備':'電動工具 電鑽 起子機 衝擊起子 砂輪機 切割機 鑽頭 鎢鋼 圓穴 點焊機 電焊 焊條 梯子 鋁梯 工具箱 工作手套 三用電表 勾表 剝線鉗 鉗子 老虎鉗 板手 扳手 螺絲起子 捲尺 水平儀 熱熔機 冷媒錶 真空泵 壓接鉗',
+'進貨':'電纜 PVC管 排水管 給水管 不鏽鋼管 水龍頭 角閥 止水閥 凡而 球閥 地排 落水頭 存水彎 軟管 蓮蓬頭 浴缸 水槽 洗手台 馬桶蓋 免治馬桶 電熱水器 瓦斯熱水器 加壓馬達 抽水馬達 水塔 濾水器 LED 燈管 崁燈 嵌燈 筒燈 燈座 蓋板 盲蓋 配電箱 漏電斷路器 NFB 單芯線 絞線 電話線 同軸線 線槽 端子 絕緣膠帶 電火布 AB膠 膨脹螺絲 壁虎 鐵釘 砂石 防水漆 排風扇 抽風機 瓦斯爐 暖風機',
+'材料':'鋁箔杯 布丁杯 焦糖 香草莢 鮮奶油 細砂糖 蛋黃 吉利丁 包材 提袋',
+'購物':'上衣 T恤 襯衫 外套 褲子 牛仔褲 短褲 裙子 洋裝 內衣 內褲 襪子 鞋子 球鞋 涼鞋 皮帶 帽子 背包 皮夾 錢包 手錶 眼鏡 隱形眼鏡 鏡片 飾品 項鍊 戒指 耳環 手機殼 保護貼 充電器 充電線 行動電源 藍牙耳機 喇叭 筆電 平板 iPad 滑鼠 鍵盤 螢幕 硬碟 隨身碟 記憶卡 相機 印表機 吹風機 momo PChome 淘寶',
+'家具':'沙發 床墊 枕頭 棉被 被子 床單 床包 窗簾 地毯 地墊 書桌 餐桌 衣櫃 鞋櫃 書櫃 層架 IKEA 宜家 宜得利 特力屋 家電 冰箱 洗衣機 烘衣機 電視 除濕機 空氣清淨機 吸塵器 掃地機 氣炸鍋 電鍋 微波爐 烤箱 熱水瓶 飲水機 電扇 電風扇',
+'娛樂':'Switch PS5 steam 遊戲點數 住宿 飯店 民宿 露營 釣竿 魚餌 漫畫 小說 演唱會 展覽 遊樂園 桌遊 樂透 彩券 刮刮樂 運彩',
+'美容/保養':'頭髮 染頭髮 燙頭髮 做頭髮 燙髮 染髮 美髮 理髮 腳底按摩 美睫 化妝品 化妝水 精華液 乳霜 防曬 口紅 粉底 卸妝 香水 健身房 瑜珈 屈臣氏 康是美',
+'教育':'補習費 書籍 講座 文具 筆記本 考試 報名費 證照 線上課程',
+'通訊':'台灣大哥大 亞太 第四台 有線電視 MOD 寬頻 光世代 月租',
+'水電/瓦斯':'瓦斯費 桶裝瓦斯 台電 自來水',
+'保險':'壽險 醫療險 意外險 車險 強制險',
+'房租/房貸':'管理費',
+'耗材':'影印 列印 沖洗照片 墨水 碳粉 影印紙',
+'軟體訂閱':'canva notion dropbox adobe gemini copilot disney',
+'運費':'貨運 宅配 郵資 寄件 黑貓 新竹物流 物流',
+'廣告行銷':'傳單 DM 臉書廣告 印刷',
+'雜費':'手續費 規費',
+'薪資':'點工 臨時工',
+};
+const DICT_ENTRIES=[];
+for(const n in DICT)for(const w of DICT[n].split(/\s+/))if(w)DICT_ENTRIES.push([n,w.toLowerCase()]);
+// 同一種東西在不同帳本的分類名稱
+const CAT_ALIAS={'購物':['娛樂/購物'],'娛樂':['娛樂/購物'],'娛樂/購物':['購物','娛樂']};
+// 依「對到的詞長度」排出可能的分類（長的優先；一樣長時內建規則優先）
+function catCandidates(text,type){
+  const t=text.toLowerCase(),sc={},order=[];
+  const add=(n,len)=>{if(!(n in sc)){sc[n]=0;order.push(n);}if(len>sc[n])sc[n]=len;};
+  for(const [name,re,onlyType] of CAT_KW){
+    if((onlyType||'expense')!==type)continue;
+    const m=text.match(re);if(m)add(name,name==='其他收入'?0.5:Math.max(1,m[0].length));
+  }
+  if(type==='expense')for(const [n,w] of DICT_ENTRIES)if(t.includes(w))add(n,w.length);
+  return order.sort((a,b)=>sc[b]-sc[a]||order.indexOf(a)-order.indexOf(b));
+}
+function findCat(cats,name){
+  for(const n of [name,...(CAT_ALIAS[name]||[])]){const c=cats.find(c=>c.name===n);if(c)return c;}
+  return null;
+}
+
 function historyVote(item,idx,ledger,type){
   const votes={};
   for(const h of idx){
@@ -276,12 +324,12 @@ function parseVoice(text,ctx){
     if(!ledger){
       // 關鍵字對到的分類只在別的帳本有（例如「醫療」只在家用）→ 換到那個帳本
       const def=ctx.defaultLedger||'個人';
-      for(const [name,re,onlyType] of CAT_KW){
-        if((onlyType||'expense')!==type||name==='其他收入'||!re.test(kwText))continue;
-        const here=(db.categories||[]).find(c=>c.ledger===def&&c.name===name);
-        const other=(db.categories||[]).find(c=>c.name===name&&['個人','家用','生意'].includes(c.ledger));
-        ledger=here?def:(other?other.ledger:null);
-        break;
+      const all=db.categories||[];
+      for(const name of catCandidates(kwText,type)){
+        if(name==='其他收入')continue;
+        if(findCat(all.filter(c=>c.ledger===def),name)){ledger=def;break;}
+        const o=['家用','個人','生意'].find(l=>findCat(all.filter(c=>c.ledger===l),name));
+        if(o){ledger=o;break;}
       }
     }
     if(!ledger)ledger=ctx.defaultLedger||'個人';
@@ -291,12 +339,7 @@ function parseVoice(text,ctx){
     let category=null;
     if(item){const v=historyVote(item,hist,ledger,type);if(v&&cats.some(c=>c.id===v.category))category=v.category;}
     if(!category){
-      for(const [name,re,onlyType] of CAT_KW){
-        if((onlyType||'expense')!==type)continue;
-        if(!re.test(kwText))continue;
-        const c=cats.find(c=>c.name===name);
-        if(c){category=c.id;break;}
-      }
+      for(const name of catCandidates(kwText,type)){const c=findCat(cats,name);if(c){category=c.id;break;}}
     }
     let guess=false;
     if(!category){

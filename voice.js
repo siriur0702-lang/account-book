@@ -133,7 +133,7 @@ const ACC_KW=[
   [/現金|付現/,'現金'],
 ];
 const ACC_STRIP=/(用|是)?(刷卡|信用卡|中信卡|中信|富邦卡|富邦|台新|line ?pay|賴 ?pay|街口|行動支付|手機付|現金|付現|轉帳|匯款|公司戶|土銀)(付的?|刷的?|付款|支付)?/gi;
-const FILLER=/^買|\s買(?=\S)|我|幫我|記一下|記帳|一下|花了|買了|付了|用了|總共|一共|共(?=\s*$)|合計|大概|大約|左右|元|塊錢|塊|圓|錢|的|了|這筆|消費|支出|生意帳?|公司的?|家用帳?|個人帳?|帳$/g;
+const FILLER=/^買|\s買(?=\S)|我|幫我|記一下|記帳|一下|花了|買了|付了|用了|總共|一共|共(?=\s*$)|合計|大概|大約|左右|元|塊錢|塊|圓|錢|的|了|這筆|消費|支出|這是|這筆是|算|生意帳?的?|事業帳?的?|工作上的?|工作用的?|公司的?|家用帳?的?|個人帳?的?|帳$/g;
 
 function cleanNote(n){return String(n||'').replace(/^(\[[^\]]*\]\s*)+/,'').trim();}
 
@@ -235,7 +235,8 @@ function findAmounts(seg){
   while((m=re.exec(seg))){
     const after=seg.slice(m.index+m[0].length).trimStart().charAt(0);
     const before=seg.slice(Math.max(0,m.index-1),m.index);
-    if(!m[2]&&after&&QTY_UNIT.includes(after))continue;
+    const rest=seg.slice(m.index+m[0].length);
+    if(!m[2]&&after&&QTY_UNIT.includes(after)&&!/^\s*個人(?!\s*(平分|分|均|AA|一起))/i.test(rest))continue; // 「500 個人」是說帳本，不是 500 個
     if(/[第×xX#\-]/.test(before))continue;
     if(!m[2]&&/^\d{5,}$/.test(m[1])&&/[^\d\s]/.test(seg.charAt(m.index+m[0].length)||''))continue; // 18560電池 這種型號
     let v=parseFloat(m[1]);if(m[2]==='塊半')v+=0.5;
@@ -310,7 +311,7 @@ function parseVoice(text,ctx){
       for(let L=n.length;L>=2;L--)for(let i=0;i+L<=n.length;i++){const sub=n.slice(i,i+L);if(item.includes(sub))item=item.split(sub).join('');}}
     // 帳本：明講的 → 案場 → 以前的紀錄 → 內建關鍵字 → 目前選的帳本
     let ledger=null;
-    if(/生意|公司/.test(seg))ledger='生意';
+    if(/生意|公司|事業|工作上|工作用|工作的/.test(seg))ledger='生意';
     else if(/烤布蕾|布蕾/.test(seg))ledger='烤布蕾';
     else if(/代收|幫鵝/.test(seg))ledger='鵝代收';
     else if(/家用|家裡/.test(seg))ledger='家用';
